@@ -1,6 +1,8 @@
 from django.db import models
 
-
 # Create your models here.
 class Post(models.Model):
-    pass
+    id = models.AutoField(primary_key=True)
+    author_id = models.ForeignKey('account.Account', on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, blank=False)
+    message = models.CharField(max_length=255, blank=True)
