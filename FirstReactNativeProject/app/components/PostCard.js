@@ -8,25 +8,25 @@ function PostCard({ title, author, content, hashtag }) {
     return (
         <View style={styles.postCard}>
             <View style={styles.cardHeader}>
-                <Text style={styles.postCardText}>{title}</Text>
+                <Text style={styles.titleText}>{title}</Text>
                 <View style={styles.cardSubHeader}>
                     <View style={styles.cardSubHeader1}>
-                        <Text style={styles.subTitle}>{author}</Text>
+                        <Text style={styles.subText}>{author}</Text>
                     </View>
                     <View style={styles.cardSubHeader2}>
-                        <Text style={styles.subTitle}>{hashtag}</Text>
+                        <Text style={styles.subText}>{hashtag}</Text>
                     </View>
                 </View>
             </View>
-            <View style={styles.postCardBody}>
-                <Text style={styles.postCardContent}>{content}</Text>
+            <View style={styles.cardBody}>
+                <Text style={styles.contentText}>{content}</Text>
             </View>
-            <View style={styles.postCardFooter}>
+            <View style={styles.cardFooter}>
                 <TouchableOpacity
                     style={styles.requestButton}
                     activeOpacity={0.6}
                     underlayColor="#DDDDDD"
-                    onPress={() => alert('Pressed!')}>
+                    onPress={() => alert('Boom!')}>
                     <Text style={styles.buttonText}>Request</Text>
                 </TouchableOpacity>
             </View>
@@ -58,40 +58,39 @@ const styles = StyleSheet.create({
     },
     cardSubHeader2: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'flex-end',
     },
-    postCardBody: {
+    cardBody: {
         flex: 3,
-    },
-    postCardContent: {
-        flex: 1,
         padding: 15,
-        fontSize: 14
     },
-    postCardFooter: {
+    cardFooter: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        padding: 10,
-        paddingTop: 0
+        paddingHorizontal: 10,
+        paddingBottom: 10,
     },
     requestButton: {
         paddingVertical: 5,
         paddingHorizontal: 10,
     },
+    titleText: {
+        fontSize: 18,
+    },
+    subText: {
+        fontSize: 13,
+        fontStyle: 'italic',
+    },
+    contentText: {
+        fontSize: 14,
+    },
     buttonText: {
         color: colors.todo,
         fontWeight: 'bold',
     },
-    postCardText: {
-        fontSize: 18,
-    },
-    subTitle: {
-        fontSize: 13,
-        fontStyle: 'italic'
-    }
 })
 
 export default PostCard;
