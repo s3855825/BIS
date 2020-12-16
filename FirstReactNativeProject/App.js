@@ -1,10 +1,8 @@
 import React from 'react';
-import { } from 'react-native';
-
-import RegisterScreen from './app/screen/RegisterScreen'
+import DashboardScreen from './app/screen/DashboardScreen'
 
 export default function App() {
   return (
-    <RegisterScreen />
+    <DashboardScreen />
   );
 }
