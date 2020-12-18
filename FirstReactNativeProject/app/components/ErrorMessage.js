@@ -1,12 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native'
 
-function ErrorMessage({ error }) {
-    if (error) return null;
+function ErrorMessage({ visible, error }) {
+    if (!visible) return null;
 
     return (
-        <Text>{error}</Text>
+        <Text style={styles.error}>{error}</Text>
     );
 }
+
+const styles = StyleSheet.create({
+    error: {
+        color: 'red',
+        fontSize: 15
+    }
+})
 
 export default ErrorMessage;

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import KusTextInput from '../components/KusTextInput';
-import KusButton from '../components/KusButton';
+import ModTextInput from '../components/ModTextInput';
+import ModButton from '../components/ModButton';
 import authApi from '../api/auth';
-import { login } from '../api/mock';
+import ErrorMessage from '../components/ErrorMessage';
+
 
 const validationSchema = Yup.object().shape({
-    username: Yup.string().required().label('Email'),
+    username: Yup.string().required().label('Username'),
     password: Yup.string().required().min(4).label('Password')
 });
 
@@ -18,7 +19,8 @@ function LoginScreen() {
 
     const handleSubmit = async ({ username, password }) => {
         const result = await authApi.login(username, password);
-        console.log(result.data)
+        Alert.alert(result.data.username, "login success")
+        
         if (!result.ok) return setLoginFailed(true)
         setLoginFailed(false)
         console.log('success');
@@ -33,26 +35,28 @@ function LoginScreen() {
             >
                 { ({ handleChange, handleSubmit, errors }) => (
                     <>
-                        <Text>Invalid username or password</Text>
-                        <KusTextInput 
-                            placeholder='username'
+                        <ErrorMessage error='Invalid username or password' visible={loginFailed} />
+                        <ModTextInput 
                             autoCapitalize="none"
                             autoCorrect={false}
+                            placeholder='username'
                             // keyboardType="email-address"
                             // textContentType="emailAddress"
                             onChangeText={handleChange('username')}
-                            style={{ width: '90%' }}/>
-                        <Text style={{ color: 'red' }}>{errors.username}</Text>
-                        <KusTextInput
-                            placeholder='password'
                             style={{ width: '90%', margin: 10 }}
+                        />
+                        <Text style={{ color: 'red' }}>{errors.username}</Text>
+                        <ModTextInput
                             autoCapitalize="none"
                             autoCorrect={false}
+                            placeholder='password'
                             textContentType="password"
+                            secureTextEntry
                             onChangeText={handleChange('password')}
-                            secureTextEntry/>
+                            style={{ width: '90%', margin: 10 }}
+                        />
                         <Text style={{ color: 'red' }}>{errors.password}</Text>
-                        <KusButton style={{ width: '90%' }} title='Confirm' onPress={handleSubmit}/>
+                        <ModButton style={{ width: '90%', margin: 10 }} title='Confirm' onPress={handleSubmit}/>
                     </>
                 )}
             </Formik>
