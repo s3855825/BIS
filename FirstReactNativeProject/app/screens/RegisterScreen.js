@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
     password: Yup.string().required().min(8).label('Password')
 });
 
-function RegisterScreen() {
+function RegisterScreen({ navigation }) {
     const handleSubmit = async ({ email, username, password }) => {
         const result = await usersApi.register(email, username, password);
 
@@ -23,6 +23,7 @@ function RegisterScreen() {
             console.log(result.data);
             return;
         }
+        navigation.navigate('Dashboard');
     }
 
     return (

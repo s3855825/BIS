@@ -1,53 +1,47 @@
-import React, {  } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import ModTextInput from '../components/ModTextInput';
 import ModButton from '../components/ModButton';
-import usersApi from '../api/register';
+import authApi from '../api/auth';
 import ErrorMessage from '../components/ErrorMessage';
 
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().required().label('Email'),
     username: Yup.string().required().label('Username'),
-    password: Yup.string().required().min(8).label('Password')
+    password: Yup.string().required().min(4).label('Password')
 });
 
-function RegisterScreen() {
-    const handleSubmit = async ({ email, username, password }) => {
-        const result = await usersApi.register(email, username, password);
+function LoginScreen() {
+    const [loginFailed, setLoginFailed] = useState(false);
 
-        if (!result.ok) {
-            console.log(result.data);
-            return;
-        }
+    const handleSubmit = async ({ username, password }) => {
+        const result = await authApi.login(username, password);
+        Alert.alert(result.data.username, "login success")
+        
+        if (!result.ok) return setLoginFailed(true)
+        setLoginFailed(false)
+        console.log('success');
     }
 
     return (
         <View style={styles.container}>
             <Formik
-                initialValues={{ email: '', username:'', password: '' }}
+                initialValues={{ username:'', password: '' }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
                 { ({ handleChange, handleSubmit, errors }) => (
                     <>
-                        <ModTextInput 
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            placeholder='email'
-                            keyboardType="email-address"
-                            textContentType="emailAddress"
-                            onChangeText={handleChange('email')}
-                            style={{ width: '90%', margin: 10 }}
-                        />
-                        <Text style={{ color: 'red' }}>{errors.email}</Text>
+                        <ErrorMessage error='Invalid username or password' visible={loginFailed} />
                         <ModTextInput 
                             autoCapitalize="none"
                             autoCorrect={false}
                             placeholder='username'
+                            // keyboardType="email-address"
+                            // textContentType="emailAddress"
                             onChangeText={handleChange('username')}
                             style={{ width: '90%', margin: 10 }}
                         />
@@ -80,4 +74,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegisterScreen;
+export default LoginScreen;
