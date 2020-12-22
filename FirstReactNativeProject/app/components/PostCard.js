@@ -1,25 +1,28 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import colors from '../config/colors'
 import edge from '../config/edge'
 
-function PostCard({ title, author, content, hashtag }) {
+function PostCard({ title, message }) {
+    const navigation = useNavigation();
+
     return (
-        <View style={styles.postCard}>
+        <TouchableOpacity style={styles.postCard} onPress={() => navigation.navigate('PostDetails')}>
             <View style={styles.cardHeader}>
                 <Text style={styles.titleText}>{title}</Text>
-                <View style={styles.cardSubHeader}>
+                {/* <View style={styles.cardSubHeader}>
                     <View style={styles.cardSubHeader1}>
                         <Text style={styles.subText}>{author}</Text>
                     </View>
                     <View style={styles.cardSubHeader2}>
                         <Text style={styles.subText}>{hashtag}</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
             <View style={styles.cardBody}>
-                <Text style={styles.contentText}>{content}</Text>
+                <Text style={styles.contentText}>{message}</Text>
             </View>
             <View style={styles.cardFooter}>
                 <TouchableOpacity
@@ -30,7 +33,7 @@ function PostCard({ title, author, content, hashtag }) {
                     <Text style={styles.buttonText}>Request</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

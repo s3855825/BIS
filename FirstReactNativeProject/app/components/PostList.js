@@ -1,49 +1,56 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
-import PostCard from './PostCard'
-import PostSeparator from './PostSeparator'
+import PostCard from './PostCard';
+import PostSeparator from './PostSeparator';
+import postsApi from '../api/posts';
+import ErrorMessage from './ErrorMessage';
+import ModButton from './ModButton';
 
-const posts = [
-    {
-        id: 1,
-        title: 'Title: Looking for a group',
-        author: 'Author: Cathrine',
-        description: 'Body 1: Some random text for testing. I am trying to make this longer and longer but I know it can be much longer than...',
-        hashtag: '#art',
-    },
-    {
-        id: 2,
-        title: 'Title: Finding last two members',
-        author: 'Author: Monserrate',
-        description: 'Body 2: Some random text for testing. I am trying to make this longer and longer but I know it can be much longer than...',
-        hashtag: '#marketing',
-    },
-    {
-        id: 3,
-        title: 'Title: omg i\'m stuck',
-        author: 'Author: Filomena',
-        description: 'Body 3: Some random text for testing. I am trying to make this longer and longer but I know it can be much longer than...',
-        hashtag: '#IT',
+function PostList() {
+    const [posts, setPosts] = useState([]);
+
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        loadPosts();
+    }, []);
+
+    const loadPosts = async () => {
+        const response = await postsApi.getPosts();
+        if (!response.ok) {
+            console.log(response.problem);
+            return setError(true);
+        }
+        setError(false);
+        setPosts(response.data);
+        console.log(response.data[5]);
     }
-]
 
-function PostList(props) {
     return (
+        // {error && (
+        //     <>
+        //         <ErrorMessage error="Could not retrieve data. Try again."/>
+        //         <ModButton title="Retry" onPress={loadPosts}/>
+        //     </>
+        // )}
         <FlatList
-            style={{ paddingHorizontal: 20 }}
             data={posts}
             keyExtractor={post => post.id.toString()}
             renderItem={({ item }) =>
                 <PostCard
                     title={item.title}
-                    author={item.author}
-                    hashtag={item.hashtag}
-                    content={item.description}
-                    />}
+                    message={item.message}
+                />}
             ItemSeparatorComponent={PostSeparator}
         />
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})
 
 export default PostList;

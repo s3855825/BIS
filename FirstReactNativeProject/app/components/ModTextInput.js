@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
 
-function KusTextInput({ style, ...otherProps }) {
+function ModTextInput({ style, ...otherProps }) {
     return (
         <View style={[styles.container, style]}>
             <TextInput {...otherProps} />
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default KusTextInput;
+export default ModTextInput;

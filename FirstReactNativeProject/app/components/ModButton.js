@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-function KusButton({ style, title, ...otherProps }) {
+function ModButton({ style, title, ...otherProps }) {
     return (
         <TouchableOpacity style={[styles.container, style]} {...otherProps} >
             <Text>{ title }</Text>
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default KusButton;
+export default ModButton;
