@@ -35,7 +35,7 @@ render () {
 value = {this.state.email}
             style={styles.inputText}
             placeholder="Email..."
-            placeholderTextColor="#003f5c"
+            placeholderTextColor="#000000"
             onChangeText={this.handleEmailChange}/>
             </View>
 
@@ -45,7 +45,7 @@ value = {this.state.email}
                         secureTextEntry
                         style={styles.inputText}
                         placeholder="Password..."
-                        placeholderTextColor="#003f5c"
+                        placeholderTextColor="#000000"
                         onChangeText={this.handlePasswordChange}/>
             </View>
 
@@ -58,7 +58,7 @@ value = {this.state.email}
                                                           <Text style={styles.loginText}>LOGIN</Text>
                                                         </TouchableOpacity>
 
-                           <TouchableOpacity style = {{alignItems: 'center', justifyContent: 'center'}}>
+                           <TouchableOpacity style = {{margin: 10, alignItems: 'center', justifyContent: 'center'}}>
                               <Text style={styles.loginText}>Signup</Text>
                             </TouchableOpacity>
     </View>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     flex: 1,
-    backgroundColor: '#003f5c'
+    backgroundColor: '#ffffff'
   },
     logo:{
     alignSelf: 'center',
@@ -81,12 +81,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
       fontWeight:"bold",
       fontSize:50,
-      color:"#fb5b5a",
+      color:"#000000",
       marginBottom:40
     },
       inputView:{
         width:"80%",
-        backgroundColor:"#465881",
+        backgroundColor:"#DDDDDD",
         borderRadius:25,
         height:50,
         marginBottom:20,
@@ -95,15 +95,15 @@ const styles = StyleSheet.create({
       },
        inputText:{
           height:50,
-          color:"white"
+          color:"#000000"
         },
           forgot:{
-            color:"white",
+            color:"#000000",
             fontSize:11
           },
             loginBtn:{
               width:"80%",
-              backgroundColor:"#fb5b5a",
+              backgroundColor:"#DDDDDD",
               borderRadius:25,
               height:50,
               justifyContent:"center",
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
               marginBottom:10
             },
               loginText:{
-                color:"white"
+                color:"#000000"
               }
 });
 
