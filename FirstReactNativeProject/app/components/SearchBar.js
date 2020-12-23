@@ -12,16 +12,17 @@ function SearchBar() {
                 placeholderTextColor={colors.todo}
                 style={styles.searchInput}
             />
-            <TouchableOpacity style={styles.advance}>
+            {/* <TouchableOpacity style={styles.advance}>
                 <Text style={styles.advanceText}>Advanced Search</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+     {/* Todo */}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     searchBar:{
-        width: '90%',
+        width: '100%',
     },
     searchInput: {
         height: 50,

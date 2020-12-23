@@ -1,119 +1,96 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Alert } from 'react-native';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-  interface State {
-    email: string;
-    password: string;
-  }
+import ModTextInput from '../components/ModTextInput';
+import ModButton from '../components/ModButton';
+import authApi from '../api/auth';
+import ErrorMessage from '../components/ErrorMessage';
+import storeToken from '../api/token';
+import storeID from '../api/id';
 
-class LoginScreen extends React.Component<{}, State> {
-state = {
-email: "",
-password: ""
-};
+const validationSchema = Yup.object().shape({
+    username: Yup.string().required().label('Username'),
+    password: Yup.string().required().min(4).label('Password')
+});
 
-handleEmailChange = (email: string) => {
-this.setState({email: email});
-};
+function LoginScreen({ navigation }) {
+    const [loginFailed, setLoginFailed] = useState(false);
 
-handlePasswordChange = (password: string) => {
-this.setState({ password: password});
-};
+    const handleSubmit = async ({ username, password }) => {
+        // const response = await authApi.login(username, password);
+        
+        // if (!response.ok) {
+        //     console.log(response.error);
+        //     return setLoginFailed(true);
+        // }
+        // setLoginFailed(false);
+        // console.log(response.data.token);
+        // const userID = response.data.token.split(': ')[0];
+        // const userToken = response.data.token.split(': ')[1];
+        // console.log(userID, userToken);
+        // storeID.setID(userID);
+        // storeToken.setToken(userToken);
 
-handleLoginPress = () => {
-console.log("Login button pressed");
-}
+        navigation.navigate('Dashboard');
+    }
 
-render () {
-  return (
+    return (
         <View style={styles.container}>
-                <Text style={styles.logo}>Group-Finding App</Text>
+            <Formik
+                initialValues={{ username:'', password: '' }}
+                onSubmit={handleSubmit}
+                validationSchema={validationSchema}
+            >
+                { ({ handleSubmit, handleChange, errors }) => (
+                    <>
+                        <ErrorMessage error='Invalid username or password' visible={loginFailed} />
+                        <ModTextInput 
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholder='username'
+                            onChangeText={handleChange('username')}
+                            style={styles.bar}
+                        />
+                        <Text style={{ color: 'red' }}>{errors.username}</Text>
+                        <ModTextInput
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholder='password'
+                            textContentType="password"
+                            secureTextEntry
+                            onChangeText={handleChange('password')}
+                            style={styles.bar}
+                        />
+                        <Text style={{ color: 'red' }}>{errors.password}</Text>
+                        <ModButton
+                            style={styles.bar}
+                            title='Confirm'
+                            onPress={handleSubmit}/>
+                        <ModButton
+                            style={styles.bar}
+                            title='Register'
+                            onPress={() => navigation.navigate('Register')}/>
+                    </>
+                )}
+            </Formik>
 
-    <View style={styles.inputView}>
-<TextInput
-value = {this.state.email}
-            style={styles.inputText}
-            placeholder="Email..."
-            placeholderTextColor="#003f5c"
-            onChangeText={this.handleEmailChange}/>
-            </View>
-
-                    <View style={styles.inputView} >
-                      <TextInput
-                      value = {this.state.password}
-                        secureTextEntry
-                        style={styles.inputText}
-                        placeholder="Password..."
-                        placeholderTextColor="#003f5c"
-                        onChangeText={this.handlePasswordChange}/>
-            </View>
-
-                  <TouchableOpacity style = {{alignItems: 'center',
-                                                  justifyContent: 'center'}}>
-                      <Text style={styles.forgot}>Forgot Password?</Text>
-                    </TouchableOpacity>
-
-                                                        <TouchableOpacity style={styles.loginBtn}>
-                                                          <Text style={styles.loginText}>LOGIN</Text>
-                                                        </TouchableOpacity>
-
-                           <TouchableOpacity style = {{alignItems: 'center', justifyContent: 'center'}}>
-                              <Text style={styles.loginText}>Signup</Text>
-                            </TouchableOpacity>
-    </View>
-  );
-  }
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-  width: '100%',
-  height: '100%',
-      alignItems: 'center',
-      justifyContent: 'center',
-    flex: 1,
-    backgroundColor: '#003f5c'
-  },
-    logo:{
-    alignSelf: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-      fontWeight:"bold",
-      fontSize:50,
-      color:"#fb5b5a",
-      marginBottom:40
+    container: {
+        flex: 1,
+        paddingTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-      inputView:{
-        width:"80%",
-        backgroundColor:"#465881",
-        borderRadius:25,
-        height:50,
-        marginBottom:20,
-        justifyContent:"center",
-        padding:20
-      },
-       inputText:{
-          height:50,
-          color:"white"
-        },
-          forgot:{
-            color:"white",
-            fontSize:11
-          },
-            loginBtn:{
-              width:"80%",
-              backgroundColor:"#fb5b5a",
-              borderRadius:25,
-              height:50,
-              justifyContent:"center",
-              alignItems: "center",
-              marginTop:40,
-              marginBottom:10
-            },
-              loginText:{
-                color:"white"
-              }
-});
+    bar: {
+        width: '90%',
+        margin: 10
+    }
+})
 
 export default LoginScreen;
