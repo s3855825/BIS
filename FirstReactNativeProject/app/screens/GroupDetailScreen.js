@@ -23,6 +23,7 @@ export default function GroupDetailScreen() {
     </Screen>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

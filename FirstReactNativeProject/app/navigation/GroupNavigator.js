@@ -11,6 +11,7 @@ function GroupNavigator() {
   return (
     <Stack.Navigator initialRouteName='GroupList'>
       <Stack.Screen name="GroupList" component={GroupListScreen} options={{ headerShown: false }} />
+
       <Stack.Screen name="GroupDetails" component={GroupDetailScreen} />
     </Stack.Navigator>
   );

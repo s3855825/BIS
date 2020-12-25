@@ -26,8 +26,10 @@ function GroupList(props) {
                 <MemberCard
                     name = {item.name}
                 />}
+
         />
     );
 }
 
 export default GroupList;
+
