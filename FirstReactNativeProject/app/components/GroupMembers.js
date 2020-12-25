@@ -5,39 +5,31 @@ import PostCard from './PostCard';
 import PostSeparator from './PostSeparator';
 import MemberCard from '../components/MemberCard';
 
-const group = [
+const member = [
     {
         'id': 1,
-        'name': 'watering',
-        'description': 'asdsadsads',
-        'createdDate': 'asdsdsa',
-        'deadline': 'adsdasd',
+        'name': 'Vinh'        
     },
     {
         'id': 2,
-        'name': "Viet",
-        'description': 'asdsadsads',
-        'createdDate': 'asdsdsa',
-        'deadline': 'adsdasd',
+        'name': 'Duc'        
     },
-    
 ]
 
-function PostList(props) {
+function GroupList(props) {
     return (
         <FlatList
             style={{ paddingHorizontal: 20 }}
-            data={group}
-            keyExtractor={group => group.id.toString()}
+            data={member}
+            keyExtractor={member => member.id.toString()}
             renderItem={({ item }) =>
                 <MemberCard
                     name = {item.name}
-                    description = {item.description}
-                    createdDate = {item.createdDate}
-                    deadline = {item.deadline}
-                    />}
+                />}
+
         />
     );
 }
 
-export default PostList;
+export default GroupList;
+
