@@ -29,5 +29,5 @@ const addPosts = (title, message, author) => client.post(endpoint, { title, mess
 export default {
     getPosts,
     addPosts,
-    searchPosts,
+    // searchPosts,
 };

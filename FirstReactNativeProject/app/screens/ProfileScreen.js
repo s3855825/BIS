@@ -50,6 +50,7 @@ function ProfileScreen({ navigation }) {
         <Screen>
             <ScreenHeader title='Profile' />
             <View style={styles.container}>
+                <ModButton title='Reload' onPress={loadUser} style={{ marginTop: 10, width: '50%' }}/>
                 <View style={styles.info}>
                     <ModText>Email: {user.email}</ModText>
                     <ModText>Username: {user.username}</ModText>

@@ -35,18 +35,18 @@ export default function DashboardScreen({ navigation }) {
     setPosts(response.data);
   }
 
-  const handleSubmit = async ({ searchText }) => {
-    const searchResponse = await postsApi.searchPosts(searchText);
+  // const handleSubmit = async ({ searchText }) => {
+  //   const searchResponse = await postsApi.searchPosts(searchText);
     
-    console.log(searchText)
-    // if (!searchResponse.ok) {
-    //     console.log('search ' + searchResponse.error + '\n' + searchResponse.data);
-    //     return;
-    // }
-    // console.log("success");
-    console.log(searchResponse.data);
-    // setPosts(searchResponse.data);
-  }
+  //   console.log(searchText)
+  //   if (!searchResponse.ok) {
+  //       console.log('search ' + searchResponse.error + '\n' + searchResponse.data);
+  //       return;
+  //   }
+  //   console.log("success");
+  //   console.log(searchResponse.data);
+  //   setPosts(searchResponse.data);
+  // }
 
   return (
     <Screen style={styles.container}>
@@ -55,9 +55,9 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.searchArea}>
           <Formik
             initialValues={{ searchText: '' }}
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
           >
-            { ({ handleSubmit, handleChange }) => (
+            { ({ handleChange }) => (
               <>
                 <ModTextInput
                   placeholder='search for post...'
@@ -65,12 +65,12 @@ export default function DashboardScreen({ navigation }) {
                   style={{ width: '95%' }}
                   onChangeText={handleChange('searchText')}
                 />
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={handleSubmit}
                   style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 10 }}
                 >
                   <Text>OK</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </>
             )}
           </Formik>
