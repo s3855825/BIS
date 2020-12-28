@@ -8,7 +8,8 @@ import ModButton from '../components/ModButton';
 import authApi from '../api/auth';
 import ErrorMessage from '../components/ErrorMessage';
 import storeToken from '../api/token';
-import storeID from '../api/id';
+import storeId from '../api/id';
+import Screen from '../components/Screen';
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required().label('Username'),
@@ -19,25 +20,24 @@ function LoginScreen({ navigation }) {
     const [loginFailed, setLoginFailed] = useState(false);
 
     const handleSubmit = async ({ username, password }) => {
-        // const response = await authApi.login(username, password);
+        const response = await authApi.login(username, password);
         
-        // if (!response.ok) {
-        //     console.log(response.error);
-        //     return setLoginFailed(true);
-        // }
-        // setLoginFailed(false);
-        // console.log(response.data.token);
-        // const userID = response.data.token.split(': ')[0];
-        // const userToken = response.data.token.split(': ')[1];
-        // console.log(userID, userToken);
-        // storeID.setID(userID);
-        // storeToken.setToken(userToken);
+        if (!response.ok) {
+            console.log(response.error);
+            return setLoginFailed(true);
+        }
+        setLoginFailed(false);
+        console.log(response.data.token);
+        const userID = response.data.token.split(': ')[0];
+        const userToken = response.data.token.split(': ')[1];
+        storeId.setID(userID);
+        storeToken.setToken(userToken);
 
         navigation.navigate('Dashboard');
     }
 
     return (
-        <View style={styles.container}>
+        <Screen style={styles.container}>
             <Formik
                 initialValues={{ username:'', password: '' }}
                 onSubmit={handleSubmit}
@@ -75,15 +75,12 @@ function LoginScreen({ navigation }) {
                     </>
                 )}
             </Formik>
-
-        </View>
+        </Screen>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },

@@ -7,47 +7,41 @@ import ModTextInput from '../components/ModTextInput';
 import ModButton from '../components/ModButton';
 import postsApi from '../api/posts';
 import storeID from '../api/id';
+import groupsApi from '../api/groups';
 
 const validationSchema = Yup.object().shape({
-    title: Yup.string().required().min(1).max(500).label('Title'),
-    message: Yup.string().required().min(10).max(10000).label('Message'),
+    groupName: Yup.string().required().min(1).max(500).label('groupName'),
 });
 
 function CreatePostScreen() {
-    const [author, setAuthor] = useState('')
+    const [author, setAuthor] = useState('4')
+    // storeID.getID().then(id => setAuthor(id));
 
-    const handleSubmit = async ({ title, message }) => {
-        storeID.getID().then(id => setAuthor(id));
-        const result = await postsApi.addPosts(title, message, author);
+    const handleSubmit = async ({ groupName }) => {
+        const result = await groupsApi.addGroups(groupName);
         if (!result.ok) {
             console.log(result.problem);
             return alert('Error. Could not send the request.');
         }
+        console.log(result.data);
         alert('Success');
     }
 
     return (
         <View style={styles.container}>
             <Formik
-                initialValues={{ title: '', message:'' }}
+                initialValues={{ groupName: '' }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
                 { ({ handleChange, handleSubmit, errors }) => (
                     <>
                         <ModTextInput 
-                            placeholder='title'
-                            onChangeText={handleChange('title')}
+                            placeholder='groupName'
+                            onChangeText={handleChange('groupName')}
                             style={{ width: '90%', margin: 10 }}
                         />
-                        <Text style={{ color: 'red' }}>{errors.title}</Text>
-                        <ModTextInput
-                            placeholder='message'
-                            onChangeText={handleChange('message')}
-                            style={{ width: '90%', margin: 10, height: 200 }}
-                            multiline={true}
-                        />
-                        <Text style={{ color: 'red' }}>{errors.message}</Text>
+                        <Text style={{ color: 'red' }}>{errors.groupName}</Text>
                         <ModButton style={{ width: '90%', margin: 10 }} title='Confirm' onPress={handleSubmit}/>
                     </>
                 )}

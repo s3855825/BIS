@@ -7,6 +7,9 @@ import ModTextInput from '../components/ModTextInput';
 import ModButton from '../components/ModButton';
 import usersApi from '../api/register';
 import ErrorMessage from '../components/ErrorMessage';
+import authApi from '../api/auth';
+import storeToken from '../api/token';
+import storeId from '../api/id';
 
 
 const validationSchema = Yup.object().shape({
@@ -23,6 +26,18 @@ function RegisterScreen({ navigation }) {
             console.log(result.data);
             return;
         }
+
+        const response = await authApi.login(username, password);
+        
+        if (!response.ok) {
+            console.log(response.error);
+        }
+
+        const userID = response.data.token.split(': ')[0];
+        const userToken = response.data.token.split(': ')[1];
+        storeId.setID(userID);
+        storeToken.setToken(userToken);
+
         navigation.navigate('Dashboard');
     }
 

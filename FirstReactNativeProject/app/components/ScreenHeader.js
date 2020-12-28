@@ -2,19 +2,17 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Pressable } from 'react-native';
 
-import colors from '../config/colors'
-import edge from '../config/edge'
+import colors from '../config/colors';
+import edge from '../config/edge';
 
-function ScreenTitle({ children }) {
+function ScreenHeader({ title }) {
     const navigation = useNavigation();
 
     return (
         <View style={[styles.header]}>
-            <Pressable style={styles.hamburger} onPress={() => navigation.openDrawer()}>
-                {/* <View style={styles.hamburger} /> */}
-            </Pressable>
+            <Pressable style={styles.hamburger} onPress={() => navigation.openDrawer()} />
             <View>
-                <Text style={styles.titleText}>{children}</Text>
+                <Text style={styles.titleText}>{title}</Text>
             </View>
         </View>
     );
@@ -40,7 +38,9 @@ const styles = StyleSheet.create({
         borderTopRightRadius: edge.global,
         borderBottomRightRadius: edge.global,
         borderRightWidth: 2,
-    }
+        height: 50
+    },
+
 })
 
-export default ScreenTitle;
+export default ScreenHeader;
