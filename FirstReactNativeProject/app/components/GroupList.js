@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,34 +10,6 @@ import {
 } from 'react-native';
 
 import ModButton from '../components/ModButton';
-import groupsApi from '../api/groups';
-
-// const groups = [
-//       {
-//         id:3,
-//         image: "https://via.placeholder.com/100x100/FFB6C1/000000",
-//         name:"Group 1",
-//         countMembers:4,
-//       },
-//       {
-//         id:2,
-//         image: "https://via.placeholder.com/100x100/4682B4/000000",
-//         name:"Group 2",
-//         countMembers:4,
-//       },
-//       {
-//         id:4,
-//         image: "https://via.placeholder.com/100x100/008080/000000",
-//         name:"Group 3",
-//         countMembers:4,
-//       },
-//       {
-//         id:5,
-//         image: "https://via.placeholder.com/100x100/FF6347/000000",
-//         name:"Group 4",
-//         countMembers:4,
-//       }
-//     ]
 
     // renderGroupMembers = (group) => {
     //     if(group.members) {
@@ -54,44 +26,14 @@ import groupsApi from '../api/groups';
     //     return null;
     //   }
 
-function GroupList() {
+function GroupList({ groupData }) {
     const navigation = useNavigation();
-
-    const [groups, setGroups] = useState([]);
-
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        loadGroups();
-    }, []);
-
-    const loadGroups = async () => {
-        const response = await groupsApi.getGroups();
-        if (!response.ok) {
-            console.log(response.problem);
-            return setError(true);
-        }
-        setError(false);
-        setGroups(response.data);
-        console.log(groups);
-    }
 
     return (
         <>
-            <View style={styles.buttonArea}>
-                <ModButton
-                    title='Reload Groups'
-                    onPress={loadGroups}
-                />
-                <ModButton
-                    title='Create a group'
-                    onPress={() => navigation.navigate('CreateGroups')}
-                />
-            </View>
-            
             <FlatList
             style={styles.root}
-            data={groups}
+            data={groupData}
             ItemSeparatorComponent={() => {
                 return (
                 <View style={styles.separator}/>
@@ -180,11 +122,6 @@ const styles = StyleSheet.create({
     groupMembersContent:{
       flexDirection:'row',
       marginTop:10
-    },
-    buttonArea: {
-        flexDirection: 'row',
-        paddingVertical: 20,
-        justifyContent: 'space-evenly'
     },
   });
 

@@ -91,16 +91,7 @@ export default function DashboardScreen({ navigation }) {
           </>
         )} */}
         <View style={styles.postArea}>
-          <FlatList
-              data={posts}
-              keyExtractor={post => post.id.toString()}
-              renderItem={({ item }) =>
-                <PostCard
-                    title={item.title}
-                    message={item.message}
-                />}
-              ItemSeparatorComponent={PostSeparator}
-          />
+          <PostList listData={posts} />
         </View>
       </View>
     </Screen>
