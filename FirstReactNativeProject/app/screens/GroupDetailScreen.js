@@ -1,18 +1,25 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
+import { StyleSheet, View, Text } from 'react-native';
 import colors from '../config/colors';
-
 import ScreenHeader from '../components/ScreenHeader';
 import Screen from '../components/Screen';
-import GroupMembers from "../components/GroupMembers"
+import Tasks from "../components/Tasks"
+import GroupList from '../components/GroupMembers';
 
-export default function App() {
+
+export default function GroupDetailScreen() {
   return (
     <Screen style={styles.container}>
       <View style={styles.postArea}>
-          <GroupMembers />
-        </View>
+        <Text>Member</Text>
+          <GroupList />
+      </View>
+      <View style={styles.task}>
+        <Text style={styles.text}>
+          Task
+        </Text>
+          <Tasks />
+      </View>
     </Screen>
   );
 }
@@ -25,9 +32,17 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
   },
-  
+  text:{
+    marginLeft: 20,
+
+  },
   postArea: {
-    flex: 4,
+    marginTop: 50,
     marginBottom: 10
   },
+  task: {
+    flex: 10,
+    marginBottom: 20
+    
+  }
 });
