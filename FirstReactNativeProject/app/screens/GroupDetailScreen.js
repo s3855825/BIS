@@ -30,7 +30,7 @@ export default function GroupDetailScreen({ route, navigation }) {
   }, []);
 
   const handleSubmit = async ({ user_id }) => {
-    const result = await groupsApi.addMember(user_id, groupInfo.id);
+    const result = await groupsApi.addMember(groupInfo.id, user_id);
     if (!result.ok) {
       console.log(result.problem);
       return;

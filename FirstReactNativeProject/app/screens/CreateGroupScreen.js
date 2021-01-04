@@ -9,19 +9,33 @@ import groupsApi from "../api/groups";
 import AuthContext from "../auth/context";
 
 const validationSchema = Yup.object().shape({
-  groupName: Yup.string().required().min(1).max(500).label("groupName"),
+  group_name: Yup.string().required().min(1).max(500).label("Group Name"),
 });
 
 function CreatePostScreen() {
   const { user } = useContext(AuthContext);
+  const user_id = user.id;
 
-  const handleSubmit = async ({ groupName }) => {
-    const result = await groupsApi.addGroup(groupName);
+  const handleSubmit = async ({ group_name }) => {
+    console.log(group_name, user.id);
+    const result = await groupsApi.addGroup(group_name);
+
     if (!result.ok) {
       console.log(result.problem);
-      alert("Error. Could not send the request.");
+      alert("group: Error. Could not send the request.");
       return;
     }
+
+    const groupId = result.data.id;
+
+    const response = await groupsApi.addMember(groupId, user_id);
+
+    if (!response.ok) {
+      console.log(response.problem + response.error);
+      alert("response: Error. Could not send the request.");
+      return;
+    }
+    console.log(response.data);
     console.log(result.data);
     alert("Success");
   };
@@ -29,7 +43,7 @@ function CreatePostScreen() {
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{ groupName: "" }}
+        initialValues={{ group_name: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
@@ -37,10 +51,10 @@ function CreatePostScreen() {
           <>
             <ModTextInput
               placeholder="Group Name"
-              onChangeText={handleChange("groupName")}
+              onChangeText={handleChange("group_name")}
               style={{ width: "90%", margin: 10 }}
             />
-            <Text style={{ color: "red" }}>{errors.groupName}</Text>
+            <Text style={{ color: "red" }}>{errors.group_name}</Text>
             <ModButton
               style={{ width: "90%", margin: 10 }}
               title="Confirm"

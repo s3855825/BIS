@@ -8,8 +8,6 @@ import ModButton from "../components/ModButton";
 import usersApi from "../api/auth";
 import ErrorMessage from "../components/ErrorMessage";
 import authApi from "../api/auth";
-import useApi from "../hooks/useApi";
-import auth from "../api/auth";
 import AuthContext from "../auth/context";
 
 const validationSchema = Yup.object().shape({
@@ -18,7 +16,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(8).label("Password"),
 });
 
-function RegisterScreen({ navigation }) {
+function RegisterScreen() {
   const { user, setUser } = useContext(AuthContext);
 
   const handleSubmit = async ({ email, username, password }) => {
