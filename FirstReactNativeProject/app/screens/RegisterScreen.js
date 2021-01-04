@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import ModTextInput from "../components/ModTextInput";
 import ModButton from "../components/ModButton";
-import usersApi from "../api/register";
+import usersApi from "../api/auth";
 import ErrorMessage from "../components/ErrorMessage";
 import authApi from "../api/auth";
 import useApi from "../hooks/useApi";

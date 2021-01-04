@@ -22,8 +22,8 @@ function Member({ listData }) {
   return (
     <FlatList
       data={listData}
-      keyExtractor={(members) => members.id.toString()}
-      renderItem={({ item }) => <MemberCard name={item.name} />}
+      keyExtractor={(members) => members.member_id.toString()}
+      renderItem={({ item }) => <MemberCard name={item.member_name} />}
       ItemSeparatorComponent={ListSeparator}
     />
   );

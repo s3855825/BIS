@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import GroupListScreen from "../screens/GroupListScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import CreateGroupScreen from "../screens/CreateGroupScreen";
+import CreateTasksScreen from "../screens/CreateTasksScreen";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ function GroupNavigator() {
         component={GroupDetailScreen}
         options={({ route }) => ({ title: route.params.name })}
       />
+      <Stack.Screen name="CreateTasks" component={CreateTasksScreen} />
     </Stack.Navigator>
   );
 }

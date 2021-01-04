@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Formik } from "formik";
 
 import colors from "../config/colors";
@@ -10,30 +16,21 @@ import AuthContext from "../auth/context";
 import useApi from "../hooks/useApi";
 import groupsApi from "../api/groups";
 import ModTextInput from "../components/ModTextInput";
+import ModText from "../components/ModText";
 
-export default function GroupDetailScreen({ route }) {
+export default function GroupDetailScreen({ route, navigation }) {
   const groupInfo = route.params;
-  const groupId = groupInfo.id;
   const { data: members, request: loadMembers } = useApi(groupsApi.getMembers);
   const { data: tasks, request: loadTasks } = useApi(groupsApi.getTasks);
 
   useEffect(() => {
     console.log("The ID is " + groupInfo.id);
-    loadMembers(groupId);
-    loadTasks(groupId);
+    loadMembers(groupInfo.id);
+    loadTasks(groupInfo.id);
   }, []);
 
-  const handleSubmit = async ({ member_id }) => {
-    const result = await groupsApi.addGroupMember(member_id, groupInfo.id);
-    if (!result.ok) {
-      console.log(result.problem);
-      return;
-    }
-    console.log(result.data);
-  };
-
-  const handleSubmitTask = async ({ task_name }) => {
-    const result = await groupsApi.addGroupTask(task_name, groupInfo.id);
+  const handleSubmit = async ({ user_id }) => {
+    const result = await groupsApi.addMember(user_id, groupInfo.id);
     if (!result.ok) {
       console.log(result.problem);
       return;
@@ -47,14 +44,14 @@ export default function GroupDetailScreen({ route }) {
         <Text>Members:</Text>
         <Members listData={members} />
         <View style={styles.searchField}>
-          <Formik initialValues={{ member_id: "" }} onSubmit={handleSubmit}>
+          <Formik initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
             {({ handleChange, handleSubmit }) => (
               <>
-                <ModTextInput
+                <TextInput
                   placeholder="add members"
                   placeholderTextColor={"black"}
-                  style={{ flex: 1 }}
-                  onChangeText={handleChange("member_id")}
+                  style={{ flex: 1, borderBottomWidth: 2, padding: 5 }}
+                  onChangeText={handleChange("user_id")}
                 />
                 <TouchableOpacity
                   onPress={handleSubmit}
@@ -74,30 +71,19 @@ export default function GroupDetailScreen({ route }) {
       <View style={styles.taskArea}>
         <Text>Tasks:</Text>
         <Tasks listData={tasks} />
-        <View style={styles.searchField}>
-          <Formik initialValues={{ task_name: "" }} onSubmit={handleSubmitTask}>
-            {({ handleChange, handleSubmit }) => (
-              <>
-                <ModTextInput
-                  placeholder="add tasks"
-                  placeholderTextColor={"black"}
-                  style={{ flex: 1 }}
-                  onChangeText={handleChange("task_name")}
-                />
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingLeft: 10,
-                  }}
-                >
-                  <Text>OK</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
-        </View>
+        {tasks.EmptyTaskList == "No task in group yet" && (
+          <ModText>Your group doesn't have any task yet</ModText>
+        )}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CreateTasks")}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            paddingLeft: 10,
+          }}
+        >
+          <Text>Create Tasks</Text>
+        </TouchableOpacity>
       </View>
     </Screen>
   );

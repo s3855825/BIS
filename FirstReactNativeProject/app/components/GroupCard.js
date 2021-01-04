@@ -24,7 +24,7 @@ function GroupCard({ onPress, data }) {
         <View style={styles.content}>
           <View style={styles.mainContent}>
             <View style={styles.text}>
-              <Text style={styles.groupName}>{data.name}</Text>
+              <Text style={styles.groupName}>{data.group_name}</Text>
             </View>
             <Text style={styles.countMembers}>
               {/* {Group.countMembers} members */}

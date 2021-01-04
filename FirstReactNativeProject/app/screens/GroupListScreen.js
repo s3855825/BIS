@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,15 +16,21 @@ import ScreenHeader from "../components/ScreenHeader";
 import Screen from "../components/Screen";
 import SearchBar from "../components/SearchBar";
 import ModButton from "../components/ModButton";
-import groupsApi from "../api/groups";
+import accountsApi from "../api/accounts";
 import useApi from "../hooks/useApi";
+import AuthContext from "../auth/context";
 
 export default function App({ navigation }) {
-  const { data: groups, request: loadGroups } = useApi(groupsApi.getGroups);
+  const { user } = useContext(AuthContext);
+  const getGroupsApi = useApi(accountsApi.getUserGroups);
 
   useEffect(() => {
-    loadGroups();
+    loadGroups;
   }, []);
+
+  const loadGroups = () => {
+    getGroupsApi.request(user.id);
+  };
 
   return (
     <Screen style={styles.container}>
@@ -41,7 +47,7 @@ export default function App({ navigation }) {
           />
         </View>
         <View style={styles.postArea}>
-          <GroupList groupData={groups} />
+          <GroupList groupData={getGroupsApi.data} />
         </View>
       </View>
     </Screen>
