@@ -1,7 +1,7 @@
-import client from './client';
+import client from "./client";
 
-const register = ( email, username, password ) => client.post('accounts/', {email, username, password})
+const register = (userInfo) => client.post("accounts/", userInfo);
 
 export default {
-    register,
+  register,
 };

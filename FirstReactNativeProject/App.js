@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-import { NavigationContainer } from '@react-navigation/native';
-
-import AuthNavigator from './app/navigation/AuthNavigator';
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import AuthContext from "./app/auth/context";
+import MainNavigator from "./app/navigation/MainNavigator";
 
 function App() {
-  return (
+  const [user, setUser] = useState();
 
-    <NavigationContainer>
-      <AuthNavigator />
-    </NavigationContainer>
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      <NavigationContainer>
+        {user ? <MainNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 
 export default App;
-

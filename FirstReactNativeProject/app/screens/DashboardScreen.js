@@ -1,97 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Formik } from 'formik';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { Formik } from "formik";
 
-import colors from '../config/colors';
+import colors from "../config/colors";
 
-import ScreenHeader from '../components/ScreenHeader';
-import Screen from '../components/Screen';
-import SearchBar from '../components/SearchBar';
-import ModButton from '../components/ModButton';
-import PostCard from '../components/PostCard';
-import PostSeparator from '../components/PostSeparator';
-import postsApi from '../api/posts';
-import ErrorMessage from '../components/ErrorMessage';
-import PostList from '../components/PostList';
-import ModTextInput from '../components/ModTextInput';
-// import storeToken from '../api/token';
-// import storeID from '../api/id';
+import ScreenHeader from "../components/ScreenHeader";
+import Screen from "../components/Screen";
+import ModButton from "../components/ModButton";
+import postsApi from "../api/posts";
+import PostList from "../components/PostList";
+import ModTextInput from "../components/ModTextInput";
+import useApi from "../hooks/useApi";
 
 export default function DashboardScreen({ navigation }) {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(false);
+  const [searching, setSearching] = useState(false);
+
+  const { data: posts, request: loadPosts } = useApi(postsApi.getPosts);
+  const { data: searchData, request: searchPosts } = useApi(
+    postsApi.searchPosts
+  );
 
   useEffect(() => {
     loadPosts();
   }, []);
 
-  const loadPosts = async () => {
-    const response = await postsApi.getPosts();
-    if (!response.ok) {
-        console.log(response.problem);
-        return setError(true);
-    }
-    setError(false);
-    setPosts(response.data);
-  }
-
-  // const handleSubmit = async ({ searchText }) => {
-  //   const searchResponse = await postsApi.searchPosts(searchText);
-    
-  //   console.log(searchText)
-  //   if (!searchResponse.ok) {
-  //       console.log('search ' + searchResponse.error + '\n' + searchResponse.data);
-  //       return;
-  //   }
-  //   console.log("success");
-  //   console.log(searchResponse.data);
-  //   setPosts(searchResponse.data);
-  // }
+  // const handleSubmit = ({ searchText }) => {
+  //   searchPosts(searchText);
+  //   setSearching(True);
+  // };
 
   return (
     <Screen style={styles.container}>
-      <ScreenHeader title='Dashboard' />
+      <ScreenHeader title="Dashboard" />
       <View style={styles.body}>
         <View style={styles.searchArea}>
-          <Formik
-            initialValues={{ searchText: '' }}
-            // onSubmit={handleSubmit}
-          >
-            { ({ handleChange }) => (
+          <Formik initialValues={{ searchText: "" }}>
+            {({ handleChange, handleSubmit }) => (
               <>
                 <ModTextInput
-                  placeholder='search for post...'
-                  placeholderTextColor={'black'}
-                  style={{ width: '95%' }}
-                  onChangeText={handleChange('searchText')}
+                  placeholder="search for post..."
+                  placeholderTextColor={"black"}
+                  style={{ width: "95%" }}
+                  onChangeText={handleChange("searchText")}
                 />
-                {/* <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 10 }}
+                <TouchableOpacity
+                  // onPress={handleSubmit}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: 10,
+                  }}
                 >
                   <Text>OK</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
               </>
             )}
           </Formik>
         </View>
         <View style={styles.buttonArea}>
+          <ModButton title="Reload Posts" onPress={loadPosts} />
           <ModButton
-            title='Reload Posts'
-            onPress={loadPosts}
-          />
-          <ModButton
-            title='Create Posts'
-            onPress={() => navigation.navigate('CreatePosts')}
+            title="Create Posts"
+            onPress={() => navigation.navigate("CreatePosts")}
           />
         </View>
-        {/* {error && (
-          <>
-              <ErrorMessage error="Could not retrieve data. Try again." visible={error}/>
-          </>
-        )} */}
         <View style={styles.postArea}>
-          <PostList listData={posts} />
+          <PostList listData={searching ? searchData : posts} />
         </View>
       </View>
     </Screen>
@@ -109,14 +83,14 @@ const styles = StyleSheet.create({
   },
   searchArea: {
     height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonArea: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 20,
-    justifyContent: 'space-evenly'
+    justifyContent: "space-evenly",
   },
   postArea: {
     flex: 1,

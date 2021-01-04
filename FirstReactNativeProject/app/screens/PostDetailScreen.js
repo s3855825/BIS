@@ -1,14 +1,19 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text, StyleSheet } from "react-native";
 
-import TestScreen from './TestScreen';
+import Screen from "../components/Screen";
 
-function PostDetailScreen() {
-    return (
-        <TestScreen>
-            <Text>CreatePosts</Text>
-        </TestScreen>
-    )
+function PostDetailScreen({ route }) {
+  const postsData = route.params;
+
+  return (
+    <Screen>
+      <Text>{postsData.author_name}</Text>
+      <Text>{postsData.message}</Text>
+    </Screen>
+  );
 }
+
+const styles = StyleSheet.create({});
 
 export default PostDetailScreen;

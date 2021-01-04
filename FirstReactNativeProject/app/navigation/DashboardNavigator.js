@@ -11,7 +11,11 @@ function DashboardNavigator() {
   return (
     <Stack.Navigator initialRouteName='Dashboard'>
       <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="PostDetails" component={PostDetailScreen} />
+      <Stack.Screen
+        name="PostDetails"
+        component={PostDetailScreen}
+        options={({ route }) => ({ title: route.params.title })}
+      />
       <Stack.Screen name="CreatePosts" component={CreatePostScreen} />
     </Stack.Navigator>
   );
