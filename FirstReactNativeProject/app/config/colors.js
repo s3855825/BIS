@@ -1,4 +1,4 @@
-  export default {
+export default {
     todo: '#000',
     // main: '#0066ff',
     // white: '#fff',

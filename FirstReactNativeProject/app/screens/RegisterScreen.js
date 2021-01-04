@@ -1,33 +1,38 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import React, {  } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import ModTextInput from '../components/ModTextInput';
 import ModButton from '../components/ModButton';
-import authApi from '../api/auth';
+import usersApi from '../api/register';
 import ErrorMessage from '../components/ErrorMessage';
+import authApi from '../api/auth';
 import storeToken from '../api/token';
 import storeId from '../api/id';
-import Screen from '../components/Screen';
+
 
 const validationSchema = Yup.object().shape({
+    email: Yup.string().required().label('Email'),
     username: Yup.string().required().label('Username'),
-    password: Yup.string().required().min(4).label('Password')
+    password: Yup.string().required().min(8).label('Password')
 });
 
-function LoginScreen({ navigation }) {
-    const [loginFailed, setLoginFailed] = useState(false);
+function RegisterScreen({ navigation }) {
+    const handleSubmit = async ({ email, username, password }) => {
+        const result = await usersApi.register(email, username, password);
 
-    const handleSubmit = async ({ username, password }) => {
+        if (!result.ok) {
+            console.log(result.data);
+            return;
+        }
+
         const response = await authApi.login(username, password);
         
         if (!response.ok) {
             console.log(response.error);
-            return setLoginFailed(true);
         }
-        setLoginFailed(false);
-        console.log(response.data.token);
+
         const userID = response.data.token.split(': ')[0];
         const userToken = response.data.token.split(': ')[1];
         storeId.setID(userID);
@@ -37,21 +42,30 @@ function LoginScreen({ navigation }) {
     }
 
     return (
-        <Screen style={styles.container}>
+        <View style={styles.container}>
             <Formik
-                initialValues={{ username:'', password: '' }}
+                initialValues={{ email: '', username:'', password: '' }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
-                { ({ handleSubmit, handleChange, errors }) => (
+                { ({ handleChange, handleSubmit, errors }) => (
                     <>
-                        <ErrorMessage error='Invalid username or password' visible={loginFailed} />
+                        <ModTextInput 
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholder='email'
+                            keyboardType="email-address"
+                            textContentType="emailAddress"
+                            onChangeText={handleChange('email')}
+                            style={{ width: '90%', margin: 10 }}
+                        />
+                        <Text style={{ color: 'red' }}>{errors.email}</Text>
                         <ModTextInput 
                             autoCapitalize="none"
                             autoCorrect={false}
                             placeholder='username'
                             onChangeText={handleChange('username')}
-                            style={styles.bar}
+                            style={{ width: '90%', margin: 10 }}
                         />
                         <Text style={{ color: 'red' }}>{errors.username}</Text>
                         <ModTextInput
@@ -61,33 +75,25 @@ function LoginScreen({ navigation }) {
                             textContentType="password"
                             secureTextEntry
                             onChangeText={handleChange('password')}
-                            style={styles.bar}
+                            style={{ width: '90%', margin: 10 }}
                         />
                         <Text style={{ color: 'red' }}>{errors.password}</Text>
-                        <ModButton
-                            style={styles.bar}
-                            title='Confirm'
-                            onPress={handleSubmit}/>
-                        <ModButton
-                            style={styles.bar}
-                            title='Register'
-                            onPress={() => navigation.navigate('Register')}/>
+                        <ModButton style={{ width: '90%', margin: 10 }} title='Confirm' onPress={handleSubmit}/>
                     </>
                 )}
             </Formik>
-        </Screen>
+
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        paddingTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    bar: {
-        width: '90%',
-        margin: 10
     }
 })
 
-export default LoginScreen;
+export default RegisterScreen;

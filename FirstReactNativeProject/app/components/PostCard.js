@@ -1,43 +1,39 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import colors from '../config/colors'
 import edge from '../config/edge'
 
-function PostCard({ title, author, content, hashtag }) {
+function PostCard({ title, message }) {
+    const navigation = useNavigation();
+
     return (
-        <View style={styles.postCard}>
+        <TouchableOpacity style={styles.postCard} onPress={() => navigation.navigate('PostDetails')}>
             <View style={styles.cardHeader}>
                 <Text style={styles.titleText}>{title}</Text>
-                <View style={styles.cardSubHeader}>
+                {/* <View style={styles.cardSubHeader}>
                     <View style={styles.cardSubHeader1}>
                         <Text style={styles.subText}>{author}</Text>
                     </View>
                     <View style={styles.cardSubHeader2}>
                         <Text style={styles.subText}>{hashtag}</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
             <View style={styles.cardBody}>
-                <Text style={styles.contentText}>{content}</Text>
+                <Text style={styles.contentText}>{message}</Text>
             </View>
             <View style={styles.cardFooter}>
                 <TouchableOpacity
-                    style={styles.approveButtonContainer}
+                    style={styles.requestButton}
                     activeOpacity={0.6}
                     underlayColor="#DDDDDD"
                     onPress={() => alert('Boom!')}>
-                    <Text style={styles.buttonText}>Approve</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.declineButtonContainer}
-                    activeOpacity={0.6}
-                    underlayColor="#DDDDDD"
-                    onPress={() => alert('Boom!')}>
-                    <Text style={styles.buttonText}>Decline</Text>
+                    <Text style={styles.buttonText}>Request</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -80,31 +76,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingBottom: 10,
     },
-    approveButtonContainer: {
-        margin: 5,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 8,
-        backgroundColor: "#DDDDDD",
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 12
-    },
-    declineButtonContainer: {
-        margin: 5,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 8,
-        backgroundColor: "#DDDDDD",
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 12
+    requestButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
     },
     titleText: {
         fontSize: 18,
