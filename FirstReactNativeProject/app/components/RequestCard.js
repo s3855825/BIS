@@ -3,60 +3,28 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 
 import colors from "../config/colors";
 import edge from "../config/edge";
-import postsApi from "../api/posts";
+import ModButton from "./ModButton";
 
-function PostCard({ title, message, onPress, postId, deletion, request }) {
-  const handlePress = async () => {
-    const request = await postsApi.deletePost(postId);
-    if (!request.ok) {
-      console.log(request.problem);
-      return;
-    }
-    console.log("OK");
-  };
-
-  const showConfirmation = () => {
-    Alert.alert(
-      "Delete Post",
-      "Are you sure to delete this post?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        { text: "OK", onPress: handlePress },
-      ],
-      { onDismiss: () => {} }
-    );
-  };
-
+function RequestCard({ title, message, onPress, id, status }) {
   return (
-    <TouchableOpacity style={styles.postCard} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.cardHeader}>
         <View style={styles.title}>
           <Text style={styles.titleText}>{title}</Text>
         </View>
-        {deletion && (
-          <TouchableOpacity onPress={showConfirmation} style={styles.delete}>
-            <Text style={styles.deleteText}>Delete</Text>
-          </TouchableOpacity>
-        )}
       </View>
+
       <View style={styles.cardBody}>
         <Text style={styles.contentText}>{message}</Text>
       </View>
 
       <View style={styles.cardFooter}>
-        {request && (
-          <TouchableOpacity
-            style={styles.requestButton}
-            activeOpacity={0.6}
-            underlayColor="#DDDDDD"
-            onPress={() => alert("TODO")}
-          >
-            <Text style={styles.buttonText}>Request</Text>
-          </TouchableOpacity>
+        {status && <Text>Status: {status}</Text>}
+        {!status && (
+          <>
+            <ModButton title="Decline" onPress={() => alert("TODO")} />
+            <ModButton title="Approve" onPress={() => alert("TODO")} />
+          </>
         )}
       </View>
     </TouchableOpacity>
@@ -64,7 +32,7 @@ function PostCard({ title, message, onPress, postId, deletion, request }) {
 }
 
 const styles = StyleSheet.create({
-  postCard: {
+  container: {
     flex: 1,
     borderWidth: 2,
     borderRadius: edge.global,
@@ -98,7 +66,7 @@ const styles = StyleSheet.create({
   cardFooter: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-evenly",
     alignItems: "center",
     paddingHorizontal: 10,
     paddingBottom: 10,
@@ -135,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostCard;
+export default RequestCard;

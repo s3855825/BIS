@@ -1,0 +1,18 @@
+export default Object.freeze({
+  LOGIN: "Login",
+  REGISTER: "Register",
+  DASHBOARD: "Dashboard",
+  POST_DETAILS: "PostDetails",
+  CREATE_POSTS: "CreatePosts",
+  GROUP_LIST: "GroupList",
+  GROUP_DETAILS: "GroupDetails",
+  INBOX_LIST: "InboxList",
+  OUTBOX_LIST: "OutboxList",
+  REQUEST_DETAILS: "RequestDetails",
+  PROFILE: "Profile",
+  SETTINGS: "Settings",
+  ABOUT: "About",
+  GROUPS: "Groups",
+  INBOX: "Inbox",
+  OUTBOX: "Outbox",
+});

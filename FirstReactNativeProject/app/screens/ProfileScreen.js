@@ -12,15 +12,16 @@ import useApi from "../hooks/useApi";
 
 function ProfileScreen() {
   const { user } = useContext(AuthContext);
-  const getPostsApi = useApi(accountsApi.getUserPosts);
-  const [havePosts, setHavePosts] = useState(false);
+  const { data: posts, request: loadForPosts } = useApi(
+    accountsApi.getUserPosts
+  );
 
   useEffect(() => {
     loadPosts();
   }, []);
 
   const loadPosts = () => {
-    getPostsApi.request(user.id);
+    loadForPosts(user.id);
   };
 
   return (
@@ -36,11 +37,13 @@ function ProfileScreen() {
           <ModText>Username: {user.username}</ModText>
           <ModText>Email: {user.email}</ModText>
         </View>
-        <ModText style={styles.posts}>Your posts:</ModText>
-        {getPostsApi.data == "You don't have any post yet :<" && (
-          <ModText>You don't have any post yet</ModText>
-        )}
-        <PostList listData={getPostsApi.data} visible={true} />
+        <ModText>Your posts:</ModText>
+        <View style={styles.posts}>
+          {posts == "You don't have any post yet :<" && (
+            <ModText>You don't have any post yet</ModText>
+          )}
+          <PostList listData={posts} deletion={true} request={false} />
+        </View>
       </View>
     </Screen>
   );
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   posts: {
-    marginBottom: 10,
+    paddingVertical: 10,
   },
 });
 

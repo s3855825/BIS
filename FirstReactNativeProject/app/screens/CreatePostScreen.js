@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Formik } from "formik";
+import React, { useContext } from "react";
+import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import ModTextInput from "../components/ModTextInput";
-import ModButton from "../components/ModButton";
 import postsApi from "../api/posts";
 import AuthContext from "../auth/context";
+import ModFormField from "../components/ModFormField";
+import ModForm from "../components/ModForm";
+import SubmitButton from "../components/SubmitButton";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).max(500).label("Title"),
@@ -16,8 +16,8 @@ const validationSchema = Yup.object().shape({
 function CreatePostScreen() {
   const { user } = useContext(AuthContext);
 
-  const handleSubmit = async ({ title, message }) => {
-    const result = await postsApi.addPost(title, message, user.id);
+  const handleSubmit = async ({ title, message, group_id }) => {
+    const result = await postsApi.addPost(title, message, group_id, user.id);
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
       alert("Error. Could not send the request.");
@@ -28,34 +28,29 @@ function CreatePostScreen() {
 
   return (
     <View style={styles.container}>
-      <Formik
-        initialValues={{ title: "", message: "" }}
+      <ModForm
+        initialValues={{ title: "", message: "", group_id: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <ModTextInput
-              placeholder="title"
-              onChangeText={handleChange("title")}
-              style={{ width: "90%", margin: 10 }}
-            />
-            <Text style={{ color: "red" }}>{errors.title}</Text>
-            <ModTextInput
-              placeholder="message"
-              onChangeText={handleChange("message")}
-              style={{ width: "90%", margin: 10, height: 200 }}
-              multiline={true}
-            />
-            <Text style={{ color: "red" }}>{errors.message}</Text>
-            <ModButton
-              style={{ width: "90%", margin: 10 }}
-              title="Confirm"
-              onPress={handleSubmit}
-            />
-          </>
-        )}
-      </Formik>
+        <ModFormField
+          placeholder="title"
+          name="title"
+          style={{ width: "90%", margin: 10 }}
+        />
+        <ModFormField
+          placeholder="message"
+          name="message"
+          style={{ width: "90%", margin: 10, height: 200 }}
+          multiline={true}
+        />
+        <ModFormField
+          placeholder="group_id"
+          name="group_id"
+          style={{ width: "90%", margin: 10 }}
+        />
+        <SubmitButton style={{ width: "90%", margin: 10 }} title="Confirm" />
+      </ModForm>
     </View>
   );
 }

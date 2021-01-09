@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import ModTextInput from "../components/ModTextInput";
 import ModButton from "../components/ModButton";
 import groupsApi from "../api/groups";
-import AuthContext from "../auth/context";
 
 const validationSchema = Yup.object().shape({
   task_name: Yup.string().required().min(1).max(500).label("Task Name"),

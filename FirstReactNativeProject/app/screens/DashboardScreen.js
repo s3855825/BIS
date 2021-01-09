@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import { Formik } from "formik";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
@@ -9,13 +9,15 @@ import Screen from "../components/Screen";
 import ModButton from "../components/ModButton";
 import postsApi from "../api/posts";
 import PostList from "../components/PostList";
-import ModTextInput from "../components/ModTextInput";
 import useApi from "../hooks/useApi";
+import ModForm from "../components/ModForm";
+import ModFormField from "../components/ModFormField";
+import SearchBar from "../components/SearchBar";
 
 export default function DashboardScreen({ navigation }) {
   const [searching, setSearching] = useState(false);
-
-  const { data: posts, request: loadPosts } = useApi(postsApi.getPosts);
+  const [refreshing, setRefreshing] = useState(false);
+  const { data: allPosts, request: loadForPosts } = useApi(postsApi.getPosts);
   const { data: searchData, request: searchPosts } = useApi(
     postsApi.searchPosts
   );
@@ -24,38 +26,29 @@ export default function DashboardScreen({ navigation }) {
     loadPosts();
   }, []);
 
-  // const handleSubmit = ({ searchText }) => {
-  //   searchPosts(searchText);
-  //   setSearching(True);
-  // };
+  const loadPosts = () => {
+    loadForPosts();
+    setSearching(false);
+  };
+
+  const handleSubmit = ({ searchText }) => {
+    searchPosts(searchText);
+    setSearching(true);
+  };
 
   return (
     <Screen style={styles.container}>
       <ScreenHeader title="Dashboard" />
       <View style={styles.body}>
         <View style={styles.searchArea}>
-          <Formik initialValues={{ searchText: "" }}>
-            {({ handleChange, handleSubmit }) => (
-              <>
-                <ModTextInput
-                  placeholder="search for post..."
-                  placeholderTextColor={"black"}
-                  style={{ width: "95%" }}
-                  onChangeText={handleChange("searchText")}
-                />
-                <TouchableOpacity
-                  // onPress={handleSubmit}
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingLeft: 10,
-                  }}
-                >
-                  <Text>OK</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
+          <ModForm initialValues={{ searchText: "" }} onSubmit={handleSubmit}>
+            <SearchBar
+              placeholder="search for post..."
+              placeholderTextColor={"black"}
+              style={{ width: "95%" }}
+              name="searchText"
+            />
+          </ModForm>
         </View>
         <View style={styles.buttonArea}>
           <ModButton title="Reload Posts" onPress={loadPosts} />
@@ -65,7 +58,11 @@ export default function DashboardScreen({ navigation }) {
           />
         </View>
         <View style={styles.postArea}>
-          <PostList listData={searching ? searchData : posts} />
+          <PostList
+            listData={searching ? searchData : allPosts}
+            onRefresh={loadPosts}
+            request={true}
+          />
         </View>
       </View>
     </Screen>
@@ -83,9 +80,9 @@ const styles = StyleSheet.create({
   },
   searchArea: {
     height: 50,
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 10,
   },
   buttonArea: {
     flexDirection: "row",

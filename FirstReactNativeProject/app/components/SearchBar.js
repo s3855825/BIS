@@ -1,44 +1,40 @@
-import React from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { useFormikContext } from "formik";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import colors from '../config/colors';
-import edge from '../config/edge'
+import ModTextInput from "./ModTextInput";
 
-function SearchBar() {
-    return (
-        <View style={styles.searchBar}>
-            <TextInput
-                placeholder='search for post...'
-                placeholderTextColor={colors.todo}
-                style={styles.searchInput}
-            />
-            {/* <TouchableOpacity style={styles.advance}>
-                <Text style={styles.advanceText}>Advanced Search</Text>
-            </TouchableOpacity> */}
-     {/* Todo */}
-        </View>
-    );
+function SearchBar({ name, onPress, ...otherProps }) {
+  const { handleChange, handleSubmit } = useFormikContext();
+  return (
+    <View style={styles.container}>
+      <ModTextInput onChangeText={handleChange(name)} {...otherProps} />
+      <TouchableOpacity onPress={handleSubmit} style={styles.okBtn}>
+        <MaterialIcons name="search" size={30} />
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    searchBar:{
-        width: '100%',
-    },
-    searchInput: {
-        height: 50,
-        borderWidth: 2,
-        borderRadius: edge.global,
-        paddingLeft: 15,
-        marginHorizontal: 10,
-        backgroundColor: colors.searchbg
-    },
-    advance: {
-        paddingTop: 8,
-        alignItems: 'flex-end'
-    },
-    advanceText: {
-        fontSize: 12
-    }
-})
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 10,
+  },
+  okBtn: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 10,
+  },
+});
 
 export default SearchBar;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -12,10 +12,8 @@ import colors from "../config/colors";
 import Screen from "../components/Screen";
 import Tasks from "../components/Tasks";
 import Members from "../components/Members";
-import AuthContext from "../auth/context";
 import useApi from "../hooks/useApi";
 import groupsApi from "../api/groups";
-import ModTextInput from "../components/ModTextInput";
 import ModText from "../components/ModText";
 
 export default function GroupDetailScreen({ route, navigation }) {

@@ -8,22 +8,19 @@ function GroupList({ groupData }) {
   const navigation = useNavigation();
 
   return (
-    <>
-      <FlatList
-        style={styles.root}
-        data={groupData}
-        ItemSeparatorComponent={() => {
-          return <View style={styles.separator} />;
-        }}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <GroupCard
-            data={item}
-            onPress={() => navigation.navigate("GroupDetails", item)}
-          />
-        )}
-      />
-    </>
+    <FlatList
+      data={groupData}
+      ItemSeparatorComponent={() => {
+        return <View style={styles.separator} />;
+      }}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <GroupCard
+          data={item}
+          onPress={() => navigation.navigate("GroupDetails", item)}
+        />
+      )}
+    />
   );
 }
 
@@ -33,7 +30,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: "#CCCCCC",
+    backgroundColor: "#000000",
   },
 });
 

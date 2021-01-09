@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Formik } from "formik";
+import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import ModTextInput from "../components/ModTextInput";
-import ModButton from "../components/ModButton";
 import usersApi from "../api/auth";
-import ErrorMessage from "../components/ErrorMessage";
 import authApi from "../api/auth";
 import AuthContext from "../auth/context";
+import ModFormField from "../components/ModFormField";
+import SubmitButton from "../components/SubmitButton";
+import ModForm from "../components/ModForm";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -17,17 +16,20 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen() {
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   const handleSubmit = async ({ email, username, password }) => {
+    // request to register a new account
     const result = await usersApi.register(email, username, password);
-    const response = await authApi.login(username, password);
 
     if (!result.ok) {
       console.log("register " + result.problem + "\n\n" + result.data);
       return;
     }
     console.log(result.data);
+
+    // request to login to extract user info
+    const response = await authApi.login(username, password);
 
     if (!response.ok) {
       console.log("login " + result.problem + "\n\n" + result.data);
@@ -43,49 +45,38 @@ function RegisterScreen() {
 
   return (
     <View style={styles.container}>
-      <Formik
+      <ModForm
         initialValues={{ email: "", username: "", password: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <ModTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="email"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-              onChangeText={handleChange("email")}
-              style={{ width: "90%", margin: 10 }}
-            />
-            <Text style={{ color: "red" }}>{errors.email}</Text>
-            <ModTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="username"
-              onChangeText={handleChange("username")}
-              style={{ width: "90%", margin: 10 }}
-            />
-            <Text style={{ color: "red" }}>{errors.username}</Text>
-            <ModTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="password"
-              textContentType="password"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              style={{ width: "90%", margin: 10 }}
-            />
-            <Text style={{ color: "red" }}>{errors.password}</Text>
-            <ModButton
-              style={{ width: "90%", margin: 10 }}
-              title="Confirm"
-              onPress={handleSubmit}
-            />
-          </>
-        )}
-      </Formik>
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="email"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          name="email"
+          style={styles.bar}
+        />
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="username"
+          name="username"
+          style={styles.bar}
+        />
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="password"
+          textContentType="password"
+          name="password"
+          secureTextEntry
+          style={styles.bar}
+        />
+        <SubmitButton style={styles.bar} title="Confirm" />
+      </ModForm>
     </View>
   );
 }
@@ -96,6 +87,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     justifyContent: "center",
     alignItems: "center",
+  },
+  bar: {
+    width: "90%",
+    margin: 10,
   },
 });
 

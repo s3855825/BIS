@@ -1,7 +1,7 @@
-import { create } from 'apisauce';
+import { create } from "apisauce";
 
 const apiClient = create({
-    baseURL: 'https://groupmakercollab.herokuapp.com'
-})
+  baseURL: "https://groupmakercollab.herokuapp.com/",
+});
 
 export default apiClient;

@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  FlatList,
-} from "react-native";
+import React, { useEffect, useContext } from "react";
+import { StyleSheet, View } from "react-native";
 import "react-native-gesture-handler";
 
 import colors from "../config/colors";
@@ -19,17 +12,20 @@ import ModButton from "../components/ModButton";
 import accountsApi from "../api/accounts";
 import useApi from "../hooks/useApi";
 import AuthContext from "../auth/context";
+import ModForm from "../components/ModForm";
 
 export default function App({ navigation }) {
   const { user } = useContext(AuthContext);
-  const getGroupsApi = useApi(accountsApi.getUserGroups);
+  const { data: allGroups, request: loadForGroups } = useApi(
+    accountsApi.getUserGroups
+  );
 
   useEffect(() => {
-    loadGroups;
+    loadForGroups(user.id);
   }, []);
 
   const loadGroups = () => {
-    getGroupsApi.request(user.id);
+    loadForGroups(user.id);
   };
 
   return (
@@ -37,7 +33,14 @@ export default function App({ navigation }) {
       <ScreenHeader title="Group" />
       <View style={styles.body}>
         <View style={styles.searchArea}>
-          <SearchBar />
+          <ModForm initialValues={{ searchText: "" }}>
+            <SearchBar
+              placeholder="search for post..."
+              placeholderTextColor={"black"}
+              style={{ width: "95%" }}
+              name="searchText"
+            />
+          </ModForm>
         </View>
         <View style={styles.buttonArea}>
           <ModButton title="Reload Groups" onPress={loadGroups} />
@@ -47,7 +50,7 @@ export default function App({ navigation }) {
           />
         </View>
         <View style={styles.postArea}>
-          <GroupList groupData={getGroupsApi.data} />
+          <GroupList groupData={allGroups} />
         </View>
       </View>
     </Screen>
@@ -62,10 +65,10 @@ const styles = StyleSheet.create({
   },
   searchArea: {
     height: 50,
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    marginHorizontal: 20,
   },
   postArea: {
     flex: 4,

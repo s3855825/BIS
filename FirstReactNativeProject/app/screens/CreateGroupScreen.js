@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -12,12 +12,12 @@ const validationSchema = Yup.object().shape({
   group_name: Yup.string().required().min(1).max(500).label("Group Name"),
 });
 
-function CreatePostScreen() {
+function CreatePostScreen({ navigation }) {
   const { user } = useContext(AuthContext);
   const user_id = user.id;
 
   const handleSubmit = async ({ group_name }) => {
-    console.log(group_name, user.id);
+    // request to add group
     const result = await groupsApi.addGroup(group_name);
 
     if (!result.ok) {
@@ -28,6 +28,7 @@ function CreatePostScreen() {
 
     const groupId = result.data.id;
 
+    // request to add current account into created group
     const response = await groupsApi.addMember(groupId, user_id);
 
     if (!response.ok) {
@@ -35,9 +36,10 @@ function CreatePostScreen() {
       alert("response: Error. Could not send the request.");
       return;
     }
+
     console.log(response.data);
     console.log(result.data);
-    alert("Success");
+    navigation.navigate("GroupDetails", result.data);
   };
 
   return (
