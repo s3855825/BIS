@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { useFormikContext } from "formik";
 import { MaterialIcons } from "@expo/vector-icons";
 

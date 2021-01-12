@@ -21,10 +21,27 @@ const Drawer = createDrawerNavigator();
 function CustomDrawerContent(props) {
   const { setUser } = useContext(AuthContext);
 
+  const handlePress = () => setUser(null);
+
+  const showConfirmation = () => {
+    Alert.alert(
+      "Log out",
+      "Are you sure?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        { text: "OK", onPress: handlePress },
+      ],
+      { onDismiss: () => {} }
+    );
+  };
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label="Log out" onPress={() => setUser(null)} />
+      <DrawerItem label="Log out" onPress={showConfirmation} />
     </DrawerContentScrollView>
   );
 }

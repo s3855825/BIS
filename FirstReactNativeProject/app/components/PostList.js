@@ -1,10 +1,10 @@
+import React, { useState } from "react";
+import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { useState } from "react/cjs/react.development";
 
 import PostCard from "./PostCard";
 import PostSeparator from "./PostSeparator";
+import routes from "../navigation/routes";
 
 function PostList({ listData, deletion, onRefresh, request }) {
   const navigation = useNavigation();
@@ -13,7 +13,7 @@ function PostList({ listData, deletion, onRefresh, request }) {
   return (
     <FlatList
       data={listData}
-      keyExtractor={(post) => post.id.toString()}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <PostCard
           title={item.title}
@@ -21,7 +21,8 @@ function PostList({ listData, deletion, onRefresh, request }) {
           postId={item.id}
           deletion={deletion}
           request={request}
-          onPress={() => navigation.navigate("PostDetails", item)}
+          requestPress={() => navigation.navigate(routes.SEND_REQUESTS, item)}
+          onPress={() => navigation.navigate(routes.POST_DETAILS, item)}
         />
       )}
       ItemSeparatorComponent={PostSeparator}
@@ -30,11 +31,5 @@ function PostList({ listData, deletion, onRefresh, request }) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default PostList;

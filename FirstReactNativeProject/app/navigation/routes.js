@@ -4,6 +4,7 @@ export default Object.freeze({
   DASHBOARD: "Dashboard",
   POST_DETAILS: "PostDetails",
   CREATE_POSTS: "CreatePosts",
+  CREATE_GROUPS: "CreateGroups",
   GROUP_LIST: "GroupList",
   GROUP_DETAILS: "GroupDetails",
   INBOX_LIST: "InboxList",
@@ -15,4 +16,5 @@ export default Object.freeze({
   GROUPS: "Groups",
   INBOX: "Inbox",
   OUTBOX: "Outbox",
+  SEND_REQUESTS: "SendRequests",
 });

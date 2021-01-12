@@ -18,7 +18,7 @@ function InboxNavigator() {
       <Stack.Screen
         name={routes.REQUEST_DETAILS}
         component={RequestDetailsScreen}
-        options={({ route }) => ({ title: route.params.title })}
+        options={({ route }) => ({ title: route.params.request_title })}
       />
     </Stack.Navigator>
   );

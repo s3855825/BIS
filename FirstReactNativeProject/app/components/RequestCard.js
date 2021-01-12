@@ -44,21 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 10,
   },
-  cardSubHeader: {
-    flex: 1,
-    flexDirection: "row",
-    paddingTop: 5,
-  },
-  cardSubHeader1: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  cardSubHeader2: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
-  },
   cardBody: {
     flex: 3,
     padding: 15,
@@ -76,7 +61,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titleText: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: "bold",
+    fontStyle: "italic",
   },
   subText: {
     fontSize: 13,

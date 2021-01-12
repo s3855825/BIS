@@ -29,12 +29,12 @@ function LoginScreen({ navigation }) {
     }
     setLoginFailed(false);
     console.log(response.data);
-    const { email } = response.data;
+    const { email, friendcode } = response.data;
 
     const id = response.data.token.split(": ")[0];
     const token = response.data.token.split(": ")[1];
 
-    setUser({ username, email, id, token });
+    setUser({ username, email, id, token, friendcode });
   };
 
   return (

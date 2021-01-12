@@ -1,18 +1,16 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import GroupCard from "./GroupCard";
 
-function GroupList({ groupData }) {
+function GroupList({ groupData, onRefresh }) {
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <FlatList
       data={groupData}
-      ItemSeparatorComponent={() => {
-        return <View style={styles.separator} />;
-      }}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <GroupCard
@@ -20,6 +18,11 @@ function GroupList({ groupData }) {
           onPress={() => navigation.navigate("GroupDetails", item)}
         />
       )}
+      ItemSeparatorComponent={() => {
+        return <View style={styles.separator} />;
+      }}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
     />
   );
 }

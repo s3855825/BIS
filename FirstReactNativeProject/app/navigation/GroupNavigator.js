@@ -5,14 +5,16 @@ import GroupListScreen from "../screens/GroupListScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import CreateGroupScreen from "../screens/CreateGroupScreen";
 import CreateTasksScreen from "../screens/CreateTasksScreen";
+import routes from "./routes";
+import DashboardScreen from "../screens/DashboardScreen";
 
 const Stack = createStackNavigator();
 
 function GroupNavigator() {
   return (
-    <Stack.Navigator initialRouteName="GroupList">
+    <Stack.Navigator initialRouteName={routes.GROUPS}>
       <Stack.Screen
-        name="GroupList"
+        name={routes.GROUPS}
         component={GroupListScreen}
         options={{ headerShown: false }}
       />

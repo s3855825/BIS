@@ -20,27 +20,33 @@ function RegisterScreen() {
 
   const handleSubmit = async ({ email, username, password }) => {
     // request to register a new account
-    const result = await usersApi.register(email, username, password);
+    const registerResponse = await usersApi.register(email, username, password);
 
-    if (!result.ok) {
-      console.log("register " + result.problem + "\n\n" + result.data);
+    if (!registerResponse.ok) {
+      console.log(
+        "register " + registerResponse.problem + "\n\n" + registerResponse.data
+      );
       return;
     }
-    console.log(result.data);
+    console.log(registerResponse.data);
 
     // request to login to extract user info
-    const response = await authApi.login(username, password);
+    const loginResponse = await authApi.login(username, password);
 
-    if (!response.ok) {
-      console.log("login " + result.problem + "\n\n" + result.data);
+    if (!loginResponse.ok) {
+      console.log(
+        "login " + loginResponse.problem + "\n\n" + loginResponse.data
+      );
       return;
     }
-    console.log(response.data);
+    console.log(loginResponse.data);
 
-    const id = response.data.token.split(": ")[0];
-    const token = response.data.token.split(": ")[1];
+    const { friendcode } = loginResponse.data;
 
-    setUser({ username, email, id, token });
+    const id = loginResponse.data.token.split(": ")[0];
+    const token = loginResponse.data.token.split(": ")[1];
+
+    setUser({ username, email, id, token, friendcode });
   };
 
   return (

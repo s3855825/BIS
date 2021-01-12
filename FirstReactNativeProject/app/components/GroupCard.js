@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 
 function GroupCard({ onPress, data }) {
   // const renderGroupMembers = (group) => {
@@ -18,7 +25,11 @@ function GroupCard({ onPress, data }) {
   // }
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableHighlight
+      underlayColor="lightgrey"
+      style={styles.container}
+      onPress={onPress}
+    >
       <View style={styles.container}>
         {/* <Image source={{uri:Group.image}} style={styles.avatar}/> */}
         <View style={styles.content}>
@@ -33,7 +44,7 @@ function GroupCard({ onPress, data }) {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 }
 

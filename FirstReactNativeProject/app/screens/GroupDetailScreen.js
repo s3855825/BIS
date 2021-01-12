@@ -1,20 +1,14 @@
 import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import { Formik } from "formik";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 
 import colors from "../config/colors";
 import Screen from "../components/Screen";
-import Tasks from "../components/Tasks";
-import Members from "../components/Members";
 import useApi from "../hooks/useApi";
 import groupsApi from "../api/groups";
 import ModText from "../components/ModText";
+import ModForm from "../components/ModForm";
+import ListSeparator from "../components/ListSeparator";
+import SearchBar from "../components/SearchBar";
 
 export default function GroupDetailScreen({ route, navigation }) {
   const groupInfo = route.params;
@@ -22,7 +16,6 @@ export default function GroupDetailScreen({ route, navigation }) {
   const { data: tasks, request: loadTasks } = useApi(groupsApi.getTasks);
 
   useEffect(() => {
-    console.log("The ID is " + groupInfo.id);
     loadMembers(groupInfo.id);
     loadTasks(groupInfo.id);
   }, []);
@@ -40,48 +33,49 @@ export default function GroupDetailScreen({ route, navigation }) {
     <Screen style={styles.container}>
       <View style={styles.memberArea}>
         <Text>Members:</Text>
-        <Members listData={members} />
+
+        <FlatList
+          data={members}
+          keyExtractor={(item) => item.member_id.toString()}
+          renderItem={({ item }) => <Text>{item.member_name}</Text>}
+          ItemSeparatorComponent={ListSeparator}
+        />
+
         <View style={styles.searchField}>
-          <Formik initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
-            {({ handleChange, handleSubmit }) => (
-              <>
-                <TextInput
-                  placeholder="add members"
-                  placeholderTextColor={"black"}
-                  style={{ flex: 1, borderBottomWidth: 2, padding: 5 }}
-                  onChangeText={handleChange("user_id")}
-                />
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingLeft: 10,
-                  }}
-                >
-                  <Text>OK</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
+          <ModForm initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
+            <SearchBar
+              placeholder="add members"
+              placeholderTextColor={"black"}
+              name="user_id"
+            />
+          </ModForm>
         </View>
       </View>
+
       <View style={styles.taskArea}>
         <Text>Tasks:</Text>
-        <Tasks listData={tasks} />
+
+        <FlatList
+          style={{ paddingHorizontal: 20 }}
+          data={tasks}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <Text>{item.task}</Text>}
+          ItemSeparatorComponent={ListSeparator}
+        />
+
         {tasks.EmptyTaskList == "No task in group yet" && (
           <ModText>Your group doesn't have any task yet</ModText>
         )}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("CreateTasks")}
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            paddingLeft: 10,
-          }}
-        >
-          <Text>Create Tasks</Text>
-        </TouchableOpacity>
+
+        <View style={styles.searchField}>
+          <ModForm initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
+            <SearchBar
+              placeholder="add members"
+              placeholderTextColor={"black"}
+              name="user_id"
+            />
+          </ModForm>
+        </View>
       </View>
     </Screen>
   );
@@ -108,5 +102,10 @@ const styles = StyleSheet.create({
   },
   searchField: {
     flexDirection: "row",
+  },
+  okBtn: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 10,
   },
 });

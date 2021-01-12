@@ -11,30 +11,29 @@ import requestsApi from "../api/requests";
 import useApi from "../hooks/useApi";
 import AuthContext from "../auth/context";
 
-const allOutbox = [
-  {
-    title: "hello",
-    message: "Hello2",
-    receiver_name: "hello3",
-    post_title: "hello4",
-    id: 1,
-    status: "Accepted",
-  },
-];
-
 export default function OutboxListScreen({ navigation }) {
   const { user } = useContext(AuthContext);
-  const { data, request: loadOutbox } = useApi(requestsApi.getOutbox);
+  const { data: allOutbox, request: loadForOutbox } = useApi(
+    requestsApi.getOutbox
+  );
 
   useEffect(() => {
-    loadOutbox(user.id);
+    loadOutbox();
   }, []);
+
+  const loadOutbox = () => {
+    loadForOutbox(user.id);
+  };
 
   return (
     <Screen style={styles.container}>
       <ScreenHeader title="Sent Request" />
       <View style={styles.body}>
-        <RequestList listData={allOutbox} status={true} />
+        <RequestList
+          listData={allOutbox}
+          status={true}
+          onRefresh={() => loadOutbox()}
+        />
       </View>
     </Screen>
   );

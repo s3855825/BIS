@@ -4,8 +4,18 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import colors from "../config/colors";
 import edge from "../config/edge";
 import postsApi from "../api/posts";
+import TouchableText from "./TouchableText";
+import requestApi from "../api/requests";
 
-function PostCard({ title, message, onPress, postId, deletion, request }) {
+function PostCard({
+  title,
+  message,
+  onPress,
+  postId,
+  deletion,
+  request,
+  requestPress,
+}) {
   const handlePress = async () => {
     const request = await postsApi.deletePost(postId);
     if (!request.ok) {
@@ -17,8 +27,8 @@ function PostCard({ title, message, onPress, postId, deletion, request }) {
 
   const showConfirmation = () => {
     Alert.alert(
-      "Delete Post",
-      "Are you sure to delete this post?",
+      "Delete this post",
+      "Are you sure?",
       [
         {
           text: "Cancel",
@@ -32,31 +42,27 @@ function PostCard({ title, message, onPress, postId, deletion, request }) {
   };
 
   return (
-    <TouchableOpacity style={styles.postCard} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.cardHeader}>
         <View style={styles.title}>
           <Text style={styles.titleText}>{title}</Text>
         </View>
         {deletion && (
-          <TouchableOpacity onPress={showConfirmation} style={styles.delete}>
-            <Text style={styles.deleteText}>Delete</Text>
-          </TouchableOpacity>
+          <TouchableText onPress={showConfirmation} style={styles.deleteText}>
+            Delete
+          </TouchableText>
         )}
       </View>
+
       <View style={styles.cardBody}>
         <Text style={styles.contentText}>{message}</Text>
       </View>
 
       <View style={styles.cardFooter}>
         {request && (
-          <TouchableOpacity
-            style={styles.requestButton}
-            activeOpacity={0.6}
-            underlayColor="#DDDDDD"
-            onPress={() => alert("TODO")}
-          >
-            <Text style={styles.buttonText}>Request</Text>
-          </TouchableOpacity>
+          <TouchableText onPress={requestPress} style={styles.requestText}>
+            Request
+          </TouchableText>
         )}
       </View>
     </TouchableOpacity>
@@ -64,7 +70,7 @@ function PostCard({ title, message, onPress, postId, deletion, request }) {
 }
 
 const styles = StyleSheet.create({
-  postCard: {
+  container: {
     flex: 1,
     borderWidth: 2,
     borderRadius: edge.global,
@@ -75,21 +81,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 10,
     paddingTop: 10,
-  },
-  cardSubHeader: {
-    flex: 1,
-    flexDirection: "row",
-    paddingTop: 5,
-  },
-  cardSubHeader1: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  cardSubHeader2: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
   },
   cardBody: {
     flex: 3,
@@ -110,24 +101,15 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 18,
   },
-  subText: {
-    fontSize: 13,
-    fontStyle: "italic",
-  },
   contentText: {
     fontSize: 14,
   },
-  buttonText: {
-    color: colors.todo,
-    fontWeight: "bold",
-  },
-  delete: {
-    flex: 1,
-    alignItems: "flex-end",
-    paddingRight: 10,
-  },
   deleteText: {
     fontStyle: "italic",
+    fontSize: 14,
+  },
+  requestText: {
+    fontSize: 14,
   },
   title: {
     flex: 1,

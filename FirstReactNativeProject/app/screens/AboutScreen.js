@@ -1,14 +1,14 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { Text } from "react-native";
 
-import TestScreen from './TestScreen';
+import Screen from "../components/Screen";
 
 function AboutScreen() {
-    return (
-        <TestScreen>
-            <Text>About</Text>
-        </TestScreen>
-    )
+  return (
+    <Screen>
+      <Text>About</Text>
+    </Screen>
+  );
 }
 
 export default AboutScreen;

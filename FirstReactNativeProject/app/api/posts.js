@@ -4,6 +4,8 @@ const endpoint = "posts/";
 
 const getPosts = () => client.get(endpoint);
 
+const getUserPosts = (id) => client.get("accounts/" + id + "/posts/");
+
 const addPost = (title, message, group, author) =>
   client.post(endpoint, { title, message, group, author });
 
@@ -14,6 +16,7 @@ const searchPosts = (querytext) =>
 
 export default {
   getPosts,
+  getUserPosts,
   addPost,
   searchPosts,
   deletePost,

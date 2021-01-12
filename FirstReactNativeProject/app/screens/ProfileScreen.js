@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList } from "react-native";
 
 import ModText from "../components/ModText";
 import Screen from "../components/Screen";
-import accountsApi from "../api/accounts";
+import postsApi from "../api/posts";
 import ScreenHeader from "../components/ScreenHeader";
 import ModButton from "../components/ModButton";
 import AuthContext from "../auth/context";
@@ -12,9 +12,7 @@ import useApi from "../hooks/useApi";
 
 function ProfileScreen() {
   const { user } = useContext(AuthContext);
-  const { data: posts, request: loadForPosts } = useApi(
-    accountsApi.getUserPosts
-  );
+  const { data: posts, request: loadForPosts } = useApi(postsApi.getUserPosts);
 
   useEffect(() => {
     loadPosts();
@@ -28,21 +26,21 @@ function ProfileScreen() {
     <Screen>
       <ScreenHeader title="Profile" />
       <View style={styles.container}>
-        <ModButton
-          title="Reload"
-          onPress={loadPosts}
-          style={{ marginTop: 10, width: "50%" }}
-        />
         <View style={styles.info}>
           <ModText>Username: {user.username}</ModText>
           <ModText>Email: {user.email}</ModText>
+          <ModText>Friend Code: {user.friendcode}</ModText>
         </View>
+
         <ModText>Your posts:</ModText>
+
         <View style={styles.posts}>
-          {posts == "You don't have any post yet :<" && (
-            <ModText>You don't have any post yet</ModText>
-          )}
-          <PostList listData={posts} deletion={true} request={false} />
+          <PostList
+            listData={posts}
+            deletion={true}
+            request={false}
+            onRefresh={loadPosts}
+          />
         </View>
       </View>
     </Screen>
@@ -61,6 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   posts: {
+    flex: 1,
     paddingVertical: 10,
   },
 });

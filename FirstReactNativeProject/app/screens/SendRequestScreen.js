@@ -2,29 +2,31 @@ import React, { useContext, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import postsApi from "../api/posts";
+import requestsApi from "../api/requests";
 import AuthContext from "../auth/context";
 import ModFormField from "../components/ModFormField";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
-import groupsApi from "../api/groups";
-import ModPicker from "../components/ModPicker";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).max(500).label("Title"),
   message: Yup.string().required().min(10).max(10000).label("Message"),
 });
 
-function CreatePostScreen() {
+function SendRequestScreen({ route }) {
   const { user } = useContext(AuthContext);
-  const { data: allGroups, request: loadGroups } = useApi(groupsApi.getGroups);
+  const postInfo = route.params;
 
-  useEffect(() => {
-    loadGroups();
-  }, []);
+  const handleSubmit = async ({ title, message }) => {
+    const result = await requestsApi.sendRequest(
+      title,
+      message,
+      user.id,
+      postInfo.author_id,
+      postInfo.id
+    );
 
-  const handleSubmit = async ({ title, message, group_id }) => {
-    const result = await postsApi.addPost(title, message, group_id, user.id);
+    console.log(title, message, user.id, postInfo.author_id, postInfo.id);
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
       alert("Error. Could not send the request.");
@@ -36,7 +38,7 @@ function CreatePostScreen() {
   return (
     <View style={styles.container}>
       <ModForm
-        initialValues={{ title: "", message: "", group_id: "" }}
+        initialValues={{ title: "", message: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
@@ -51,12 +53,6 @@ function CreatePostScreen() {
           style={{ width: "90%", margin: 10, height: 200 }}
           multiline={true}
         />
-        <ModFormField
-          placeholder="group_id"
-          name="group_id"
-          style={{ width: "90%", margin: 10 }}
-        />
-        {/* <ModPicker placeholder="" listData={allGroups} /> */}
         <SubmitButton style={{ width: "90%", margin: 10 }} title="Confirm" />
       </ModForm>
     </View>
@@ -72,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreatePostScreen;
+export default SendRequestScreen;
