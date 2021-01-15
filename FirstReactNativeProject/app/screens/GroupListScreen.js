@@ -10,7 +10,6 @@ import header from "../styles/header";
 
 import GroupList from "../components/GroupList";
 import CreateGroupScreen from "./CreateGroupScreen";
-import ModButton from "../components/ModButton";
 
 export default function App({ route, navigation }) {
   const { user } = useContext(AuthContext);

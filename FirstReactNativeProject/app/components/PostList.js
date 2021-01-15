@@ -20,7 +20,7 @@ function PostList({ listData, deletion, onRefresh, request }) {
           deletion={deletion}
           request={request}
           requestPress={() => navigation.navigate(routes.SEND_REQUESTS, item)}
-          onPress={() => navigation.navigate(routes.POST_DETAILS, item)}
+          cardPress={() => navigation.navigate(routes.POST_DETAILS, item)}
         />
       )}
       ItemSeparatorComponent={PostSeparator}

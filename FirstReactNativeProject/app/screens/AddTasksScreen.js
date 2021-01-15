@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
 
@@ -37,10 +37,10 @@ function AddTasksScreen() {
 
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
-      alert("Error. Could not send the request.");
+      Alert.alert("Error!", "Could not create task.");
       return;
     }
-    alert("Success");
+    Alert.alert("Success!", "Task added");
   };
 
   return (

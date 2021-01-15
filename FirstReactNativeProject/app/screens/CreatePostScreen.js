@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
 
 import AuthContext from "../auth/context";
@@ -9,15 +10,13 @@ import postsApi from "../api/posts";
 import ModForm from "../components/ModForm";
 import ModFormField from "../components/ModFormField";
 import SubmitButton from "../components/SubmitButton";
-import routes from "../navigation/routes";
-import { useRoute } from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).max(100).label("Title"),
   message: Yup.string().required().min(10).max(255).label("Message"),
 });
 
-function CreatePostScreen({ navigation }) {
+function CreatePostScreen() {
   const { user } = useContext(AuthContext);
   const route = useRoute();
   const groupInfo = route.params;
@@ -29,12 +28,14 @@ function CreatePostScreen({ navigation }) {
       groupInfo.id,
       user.id
     );
+
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
-      alert("Error. Could not send the request.");
+      Alert.alert("Error!", "Could not create post.");
       return;
     }
-    alert("Success");
+
+    Alert.alert("Success!", "Post created.");
   };
 
   return (

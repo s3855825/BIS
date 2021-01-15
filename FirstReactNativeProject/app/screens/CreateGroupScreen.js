@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import * as Yup from "yup";
 
 import groupsApi from "../api/groups";
@@ -24,7 +24,7 @@ function CreateGroupScreen({ navigation }) {
 
     if (!result.ok) {
       console.log(result.problem);
-      alert("group: Error. Could not send the request.");
+      Alert.alert("Error!", "Can not create group.");
       return;
     }
 
@@ -33,12 +33,13 @@ function CreateGroupScreen({ navigation }) {
 
     if (!response.ok) {
       console.log(response.problem + response.error);
-      alert("response: Error. Could not send the request.");
+      Alert.alert(
+        "Error!",
+        "Group created but could not add yourself into group."
+      );
       return;
     }
 
-    console.log(response.data);
-    console.log(result.data);
     navigation.navigate("GroupDetails", result.data);
   };
 

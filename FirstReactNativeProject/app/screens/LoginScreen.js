@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import ModButton from "../components/ModButton";
@@ -25,7 +25,8 @@ function LoginScreen({ navigation }) {
 
     if (!response.ok) {
       console.log(response.error);
-      return setLoginFailed(true);
+      setLoginFailed(true);
+      return;
     }
     setLoginFailed(false);
     console.log(response.data);

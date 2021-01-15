@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import border from "../config/border";
 import bgColor from "../config/bgColor";
@@ -8,13 +9,16 @@ import card from "../styles/card";
 
 import TouchableText from "./TouchableText";
 
-function PostCard({ item, onPress, deletion, request, requestPress }) {
+function PostCard({ item, request, cardPress, requestPress, deletion }) {
   const handlePress = async () => {
     const request = await postsApi.deletePost(item.id);
+
     if (!request.ok) {
       console.log(request.problem);
+      Alert.alert("Error!", "Can not delete post.");
       return;
     }
+
     console.log("OK");
   };
 
@@ -35,7 +39,7 @@ function PostCard({ item, onPress, deletion, request, requestPress }) {
   };
 
   return (
-    <TouchableOpacity style={card.container} onPress={onPress}>
+    <TouchableOpacity style={card.container} onPress={cardPress}>
       <View style={card.headerArea}>
         <View style={card.titleCon}>
           <Text style={card.titleText}>{item.title}</Text>

@@ -38,7 +38,6 @@ export default function GroupDetailScreen({ route, navigation }) {
           renderItem={({ item }) => <Text>{item.member_name}</Text>}
           ItemSeparatorComponent={ListSeparator}
         />
-
         <View style={styles.btn}>
           <TouchableText onPress={() => setPostModal(true)}>
             Create a post

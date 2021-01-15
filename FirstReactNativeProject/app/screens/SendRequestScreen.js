@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import * as Yup from "yup";
 
 import requestsApi from "../api/requests";
@@ -29,10 +29,11 @@ function SendRequestScreen({ route }) {
     console.log(title, message, user.id, postInfo.author_id, postInfo.id);
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
-      alert("Error. Could not send the request.");
+      Alert.alert("Error!", "Could not send request.");
       return;
     }
-    alert("Success");
+
+    Alert.alert("Success!", "Request sent.");
   };
 
   return (
