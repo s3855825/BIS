@@ -2,29 +2,33 @@ import React, { useContext, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import postsApi from "../api/posts";
 import AuthContext from "../auth/context";
-import ModFormField from "../components/ModFormField";
-import ModForm from "../components/ModForm";
-import SubmitButton from "../components/SubmitButton";
 import groupsApi from "../api/groups";
-import ModPicker from "../components/ModPicker";
+import postsApi from "../api/posts";
+
+import ModForm from "../components/ModForm";
+import ModFormField from "../components/ModFormField";
+import SubmitButton from "../components/SubmitButton";
+import routes from "../navigation/routes";
+import { useRoute } from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).max(500).label("Title"),
-  message: Yup.string().required().min(10).max(10000).label("Message"),
+  title: Yup.string().required().min(1).max(100).label("Title"),
+  message: Yup.string().required().min(10).max(255).label("Message"),
 });
 
-function CreatePostScreen() {
+function CreatePostScreen({ navigation }) {
   const { user } = useContext(AuthContext);
-  const { data: allGroups, request: loadGroups } = useApi(groupsApi.getGroups);
+  const route = useRoute();
+  const groupInfo = route.params;
 
-  useEffect(() => {
-    loadGroups();
-  }, []);
-
-  const handleSubmit = async ({ title, message, group_id }) => {
-    const result = await postsApi.addPost(title, message, group_id, user.id);
+  const handleSubmit = async ({ title, message }) => {
+    const result = await postsApi.addPost(
+      title,
+      message,
+      groupInfo.id,
+      user.id
+    );
     if (!result.ok) {
       console.log(result.data + result.problem + result.errors);
       alert("Error. Could not send the request.");
@@ -36,28 +40,18 @@ function CreatePostScreen() {
   return (
     <View style={styles.container}>
       <ModForm
-        initialValues={{ title: "", message: "", group_id: "" }}
+        initialValues={{ title: "", message: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
+        <ModFormField placeholder="Title" name="title" style={styles.bar} />
         <ModFormField
-          placeholder="title"
-          name="title"
-          style={{ width: "90%", margin: 10 }}
-        />
-        <ModFormField
-          placeholder="message"
+          placeholder="Message"
           name="message"
-          style={{ width: "90%", margin: 10, height: 200 }}
+          style={[styles.bar]}
           multiline={true}
         />
-        <ModFormField
-          placeholder="group_id"
-          name="group_id"
-          style={{ width: "90%", margin: 10 }}
-        />
-        {/* <ModPicker placeholder="" listData={allGroups} /> */}
-        <SubmitButton style={{ width: "90%", margin: 10 }} title="Confirm" />
+        <SubmitButton style={styles.bar} title="Confirm" />
       </ModForm>
     </View>
   );
@@ -67,8 +61,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    justifyContent: "center",
     alignItems: "center",
+  },
+  bar: {
+    width: "90%",
+    margin: 10,
   },
 });
 

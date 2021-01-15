@@ -1,17 +1,24 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, FlatList, Modal } from "react-native";
 
-import colors from "../config/colors";
+import bgColor from "../config/bgColor";
 import Screen from "../components/Screen";
 import useApi from "../hooks/useApi";
 import groupsApi from "../api/groups";
+
 import ModText from "../components/ModText";
-import ModForm from "../components/ModForm";
 import ListSeparator from "../components/ListSeparator";
-import SearchBar from "../components/SearchBar";
+import AddMembersScreen from "./AddMembersScreen";
+import AddTasksScreen from "./AddTasksScreen";
+import CreatePostScreen from "./CreatePostScreen";
+import TouchableText from "../components/TouchableText";
 
 export default function GroupDetailScreen({ route, navigation }) {
   const groupInfo = route.params;
+  const [memberModal, setMemberModal] = useState(false);
+  const [taskModal, setTaskModal] = useState(false);
+  const [postModal, setPostModal] = useState(false);
+
   const { data: members, request: loadMembers } = useApi(groupsApi.getMembers);
   const { data: tasks, request: loadTasks } = useApi(groupsApi.getTasks);
 
@@ -20,19 +27,10 @@ export default function GroupDetailScreen({ route, navigation }) {
     loadTasks(groupInfo.id);
   }, []);
 
-  const handleSubmit = async ({ user_id }) => {
-    const result = await groupsApi.addMember(groupInfo.id, user_id);
-    if (!result.ok) {
-      console.log(result.problem);
-      return;
-    }
-    console.log(result.data);
-  };
-
   return (
     <Screen style={styles.container}>
       <View style={styles.memberArea}>
-        <Text>Members:</Text>
+        <Text style={styles.heading}>Members:</Text>
 
         <FlatList
           data={members}
@@ -41,19 +39,18 @@ export default function GroupDetailScreen({ route, navigation }) {
           ItemSeparatorComponent={ListSeparator}
         />
 
-        <View style={styles.searchField}>
-          <ModForm initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
-            <SearchBar
-              placeholder="add members"
-              placeholderTextColor={"black"}
-              name="user_id"
-            />
-          </ModForm>
+        <View style={styles.btn}>
+          <TouchableText onPress={() => setPostModal(true)}>
+            Create a post
+          </TouchableText>
+          <TouchableText onPress={() => setMemberModal(true)}>
+            Add Members
+          </TouchableText>
         </View>
       </View>
 
       <View style={styles.taskArea}>
-        <Text>Tasks:</Text>
+        <Text style={styles.heading}>Tasks:</Text>
 
         <FlatList
           style={{ paddingHorizontal: 20 }}
@@ -67,16 +64,41 @@ export default function GroupDetailScreen({ route, navigation }) {
           <ModText>Your group doesn't have any task yet</ModText>
         )}
 
-        <View style={styles.searchField}>
-          <ModForm initialValues={{ user_id: "" }} onSubmit={handleSubmit}>
-            <SearchBar
-              placeholder="add members"
-              placeholderTextColor={"black"}
-              name="user_id"
-            />
-          </ModForm>
+        <View style={styles.btn}>
+          <TouchableText onPress={() => setTaskModal(true)}>
+            Add Tasks
+          </TouchableText>
         </View>
       </View>
+      <Modal
+        visible={postModal}
+        animationType="slide"
+        onRequestClose={() => {
+          setPostModal(false);
+        }}
+      >
+        <CreatePostScreen />
+      </Modal>
+      <Modal
+        visible={memberModal}
+        animationType="fade"
+        onRequestClose={() => {
+          setMemberModal(false);
+        }}
+        transparent
+      >
+        <AddMembersScreen />
+      </Modal>
+      <Modal
+        visible={taskModal}
+        animationType="fade"
+        onRequestClose={() => {
+          setTaskModal(false);
+        }}
+        transparent
+      >
+        <AddTasksScreen />
+      </Modal>
     </Screen>
   );
 }
@@ -84,8 +106,8 @@ export default function GroupDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.screen,
-    padding: 10,
+    backgroundColor: bgColor.screen,
+    padding: 15,
   },
   body: {
     flex: 1,
@@ -100,12 +122,11 @@ const styles = StyleSheet.create({
   taskArea: {
     marginBottom: 20,
   },
-  searchField: {
-    flexDirection: "row",
+  btn: {
+    alignSelf: "flex-end",
   },
-  okBtn: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 10,
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

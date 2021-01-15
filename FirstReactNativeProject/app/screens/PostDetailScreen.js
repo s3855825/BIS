@@ -1,5 +1,7 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+
+import details from "../styles/details";
 
 import Screen from "../components/Screen";
 
@@ -7,26 +9,18 @@ function PostDetailScreen({ route }) {
   const postInfo = route.params;
 
   return (
-    <Screen style={styles.container}>
-      <Text style={styles.title}>{postInfo.author_name}</Text>
-      <Text style={styles.message}>{postInfo.message}</Text>
+    <Screen style={details.container}>
+      <ScrollView>
+        <Text style={details.titleText}>{postInfo.title}</Text>
+        <View style={details.author}>
+          <Text style={details.headingText}>Author: </Text>
+          <Text style={details.bodyText}>{postInfo.author_name}</Text>
+        </View>
+        <Text style={details.headingText}>Message:</Text>
+        <Text style={details.bodyText}>{postInfo.message}</Text>
+      </ScrollView>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    paddingBottom: 10,
-  },
-  message: {
-    fontSize: 18,
-  },
-});
 
 export default PostDetailScreen;

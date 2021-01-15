@@ -1,20 +1,22 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Formik } from "formik";
+import { View } from "react-native";
 import * as Yup from "yup";
 
-import ModTextInput from "../components/ModTextInput";
-import ModButton from "../components/ModButton";
 import groupsApi from "../api/groups";
 import AuthContext from "../auth/context";
+import modal from "../styles/modal";
+
+import ModForm from "../components/ModForm";
+import ModFormField from "../components/ModFormField";
+import SubmitButton from "../components/SubmitButton";
+import Screen from "../components/Screen";
 
 const validationSchema = Yup.object().shape({
   group_name: Yup.string().required().min(1).max(500).label("Group Name"),
 });
 
-function CreatePostScreen({ navigation }) {
+function CreateGroupScreen({ navigation }) {
   const { user } = useContext(AuthContext);
-  const user_id = user.id;
 
   const handleSubmit = async ({ group_name }) => {
     // request to add group
@@ -26,10 +28,8 @@ function CreatePostScreen({ navigation }) {
       return;
     }
 
-    const groupId = result.data.id;
-
     // request to add current account into created group
-    const response = await groupsApi.addMember(groupId, user_id);
+    const response = await groupsApi.addMember(result.data.id, user.friendcode);
 
     if (!response.ok) {
       console.log(response.problem + response.error);
@@ -43,39 +43,23 @@ function CreatePostScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Formik
-        initialValues={{ group_name: "" }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <ModTextInput
-              placeholder="Group Name"
-              onChangeText={handleChange("group_name")}
-              style={{ width: "90%", margin: 10 }}
-            />
-            <Text style={{ color: "red" }}>{errors.group_name}</Text>
-            <ModButton
-              style={{ width: "90%", margin: 10 }}
-              title="Confirm"
-              onPress={handleSubmit}
-            />
-          </>
-        )}
-      </Formik>
-    </View>
+    <Screen style={modal.container}>
+      <View style={modal.modalView}>
+        <ModForm
+          initialValues={{ group_name: "" }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <ModFormField
+            placeholder="Group Name"
+            name="group_name"
+            style={modal.bar}
+          />
+          <SubmitButton style={modal.bar} title="Confirm" />
+        </ModForm>
+      </View>
+    </Screen>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
-
-export default CreatePostScreen;
+export default CreateGroupScreen;

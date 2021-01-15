@@ -7,6 +7,7 @@ import ModTextInput from "./ModTextInput";
 
 function SearchBar({ name, onPress, ...otherProps }) {
   const { handleChange, handleSubmit } = useFormikContext();
+
   return (
     <View style={styles.container}>
       <ModTextInput onChangeText={handleChange(name)} {...otherProps} />

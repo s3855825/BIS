@@ -1,32 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 
-import colors from "../config/colors";
-import edge from "../config/edge";
-import ModButton from "./ModButton";
+import border from "../config/border";
+import bgColor from "../config/bgColor";
+import textColor from "../config/textColor";
+import card from "../styles/card";
 
 function RequestCard({ title, message, onPress, id, status }) {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.cardHeader}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>{title}</Text>
+    <TouchableOpacity style={card.container} onPress={onPress}>
+      <View style={card.headerArea}>
+        <View style={card.titleCon}>
+          <Text style={card.titleText}>{title}</Text>
         </View>
       </View>
 
-      <View style={styles.cardBody}>
-        <Text style={styles.contentText}>{message}</Text>
+      <View style={card.bodyArea}>
+        <Text style={card.bodyText}>{message}</Text>
       </View>
 
-      <View style={styles.cardFooter}>
-        {status && <Text>Status: {status}</Text>}
-        {!status && (
-          <>
-            <ModButton title="Decline" onPress={() => alert("TODO")} />
-            <ModButton title="Approve" onPress={() => alert("TODO")} />
-          </>
-        )}
-      </View>
+      {status && (
+        <View style={card.footerArea}>
+          <Text>Status: {status}</Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
@@ -34,9 +31,9 @@ function RequestCard({ title, message, onPress, id, status }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 2,
-    borderRadius: edge.global,
-    backgroundColor: colors.inputbg,
+    borderWidth: border.width,
+    borderRadius: border.radius,
+    backgroundColor: bgColor.inputbg,
   },
   cardHeader: {
     flex: 1,
@@ -73,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   buttonText: {
-    color: colors.todo,
+    color: textColor.button,
     fontWeight: "bold",
   },
   delete: {

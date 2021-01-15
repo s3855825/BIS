@@ -1,62 +1,63 @@
-import React, { useEffect, useContext } from "react";
-import { View } from "react-native";
+import React, { useEffect, useContext, useState } from "react";
+import { View, Modal, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import AuthContext from "../auth/context";
 import groupsApi from "../api/groups";
 import useApi from "../hooks/useApi";
-import routes from "../navigation/routes";
-import barNList from "../styles/barNList";
+import barList from "../styles/barList";
+import header from "../styles/header";
 
-import Screen from "../components/Screen";
-import ScreenHeader from "../components/ScreenHeader";
-import SearchBar from "../components/SearchBar";
 import GroupList from "../components/GroupList";
-import ModForm from "../components/ModForm";
-import TouchableText from "../components/TouchableText";
+import CreateGroupScreen from "./CreateGroupScreen";
+import ModButton from "../components/ModButton";
 
-export default function App({ navigation }) {
+export default function App({ route, navigation }) {
   const { user } = useContext(AuthContext);
+  const [modalOn, setModalOn] = useState(false);
 
   const { data: allData, request: loadForData } = useApi(
     groupsApi.getUserGroups
   );
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = () => {
     loadForData(user.id);
   };
 
+  const loadRightBtn = () => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => setModalOn(true)}
+          style={header.rightBtn}
+        >
+          <MaterialIcons name="add" size={40} />
+        </TouchableOpacity>
+      ),
+    });
+  };
+
+  useEffect(() => {
+    loadRightBtn();
+    loadData();
+  }, []);
+
   return (
-    <Screen style={barNList.container}>
-      <ScreenHeader title="Group" />
-
-      <View style={barNList.body}>
-        <View style={barNList.searchArea}>
-          <ModForm initialValues={{ searchText: "" }}>
-            <SearchBar
-              placeholder="search for post..."
-              placeholderTextColor={"black"}
-              style={{ width: "95%" }}
-              name="searchText"
-            />
-          </ModForm>
-        </View>
-
-        <View style={barNList.buttonArea}>
-          <TouchableText
-            onPress={() => navigation.navigate(routes.CREATE_GROUPS)}
-          >
-            Create a group
-          </TouchableText>
-        </View>
-
-        <View style={barNList.groupArea}>
-          <GroupList groupData={allData} />
+    <View style={barList.container}>
+      <View style={barList.body}>
+        <View style={barList.groupArea}>
+          <GroupList groupData={allData} onRefresh={loadData} />
         </View>
       </View>
-    </Screen>
+
+      <Modal
+        visible={modalOn}
+        animationType="fade"
+        onRequestClose={() => setModalOn(false)}
+        transparent
+      >
+        <CreateGroupScreen />
+      </Modal>
+    </View>
   );
 }

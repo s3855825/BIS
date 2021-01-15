@@ -1,14 +1,10 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 function ModText({ children }) {
-    return (
-        <Text>{children}</Text>
-    );
+  return <Text>{children}</Text>;
 }
 
-const styles = StyleSheet.create({
-    
-})
+const styles = StyleSheet.create({});
 
 export default ModText;

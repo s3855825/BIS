@@ -1,9 +1,6 @@
-import colors from "../config/colors";
-
 export default {
   container: {
     flex: 1,
-    backgroundColor: colors.screen,
   },
   body: {
     flex: 1,
@@ -23,7 +20,7 @@ export default {
   },
   postArea: {
     flex: 1,
-    marginVertical: 10,
+    marginTop: 20,
     marginHorizontal: 20,
   },
 };

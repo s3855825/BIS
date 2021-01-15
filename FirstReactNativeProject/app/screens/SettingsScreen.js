@@ -17,67 +17,66 @@ const validationSchema = Yup.object().shape({
 });
 
 function SettingsScreen({ navigation }) {
-  const { setUser } = useContext(AuthContext);
-
   const handleSubmit = () => {
     alert("TODO");
   };
 
   return (
-    <Screen style={styles.container}>
-      <ScreenHeader title="Settings" />
-      <Text>Change account information</Text>
-      <View style={styles.body}>
-        <ModForm
-          initialValues={{ email: "", username: "", password: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <Text>Edit email:</Text>
-          <ModFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="email"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            name="email"
-            style={styles.bar}
-          />
-          <Text>Edit username:</Text>
-          <ModFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="username"
-            name="username"
-            style={styles.bar}
-          />
-          <Text>Edit password:</Text>
-          <ModFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="password"
-            textContentType="password"
-            name="password"
-            secureTextEntry
-            style={styles.bar}
-          />
-          <SubmitButton style={styles.bar} title="Confirm" />
-        </ModForm>
-      </View>
-    </Screen>
+    <View style={styles.container}>
+      <Text style={styles.title}>Change account information</Text>
+      <ModForm
+        initialValues={{ email: "", username: "", password: "" }}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        <Text>Edit email:</Text>
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="email"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          name="email"
+          style={styles.bar}
+        />
+        <Text>Edit username:</Text>
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="username"
+          name="username"
+          style={styles.bar}
+        />
+        <Text>Edit password:</Text>
+        <ModFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="password"
+          textContentType="password"
+          name="password"
+          secureTextEntry
+          style={styles.bar}
+        />
+        <SubmitButton style={styles.bar} title="Confirm" />
+      </ModForm>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  body: {
-    padding: 10,
+    paddingTop: 10,
+    paddingHorizontal: 10,
   },
   bar: {
     width: "90%",
     margin: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingBottom: 10,
   },
 });
 

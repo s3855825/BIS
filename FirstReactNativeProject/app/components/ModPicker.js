@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import border from "../config/border";
+
 import ModText from "./ModText";
 
 function ModPicker({ icon, style, placeholder, listData }) {
@@ -55,8 +57,8 @@ function ModPicker({ icon, style, placeholder, listData }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: border.width,
+    borderRadius: border.radius,
     justifyContent: "center",
   },
   icon: {

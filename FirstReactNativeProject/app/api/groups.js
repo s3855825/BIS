@@ -10,13 +10,17 @@ const addGroup = (group_name) => client.post(endpoint, { group_name });
 
 const getMembers = (groupId) => client.get(endpoint + groupId + "/members/");
 
-const addMember = (groupId, user_id) =>
-  client.post(endpoint + groupId + "/members/", { user_id });
+const addMember = (groupId, friendcode) =>
+  client.post(endpoint + groupId + "/members/", { friendcode });
 
 const getTasks = (groupId) => client.get(endpoint + groupId + "/tasks/");
 
-const addTask = (task_name, task_description, groupId) =>
-  client.post(endpoint + groupId + "/tasks/", { task_name, task_description });
+const addTask = (task_name, task_description, groupId, author) =>
+  client.post(endpoint + groupId + "/tasks/", {
+    task_name,
+    task_description,
+    author,
+  });
 
 export default {
   getGroups,

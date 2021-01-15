@@ -23,27 +23,24 @@ function ProfileScreen() {
   };
 
   return (
-    <Screen>
-      <ScreenHeader title="Profile" />
-      <View style={styles.container}>
-        <View style={styles.info}>
-          <ModText>Username: {user.username}</ModText>
-          <ModText>Email: {user.email}</ModText>
-          <ModText>Friend Code: {user.friendcode}</ModText>
-        </View>
-
-        <ModText>Your posts:</ModText>
-
-        <View style={styles.posts}>
-          <PostList
-            listData={posts}
-            deletion={true}
-            request={false}
-            onRefresh={loadPosts}
-          />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.info}>
+        <ModText>Username: {user.username}</ModText>
+        <ModText>Email: {user.email}</ModText>
+        <ModText>Friend Code: {user.friendcode}</ModText>
       </View>
-    </Screen>
+
+      <ModText>Your posts:</ModText>
+
+      <View style={styles.posts}>
+        <PostList
+          listData={posts}
+          deletion={true}
+          request={false}
+          onRefresh={loadPosts}
+        />
+      </View>
+    </View>
   );
 }
 
@@ -51,7 +48,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingBottom: 10,
   },
   info: {
     justifyContent: "center",
@@ -60,7 +56,7 @@ const styles = StyleSheet.create({
   },
   posts: {
     flex: 1,
-    paddingVertical: 10,
+    marginTop: 10,
   },
 });
 

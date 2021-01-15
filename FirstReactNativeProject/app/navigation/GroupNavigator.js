@@ -1,30 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import { Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import routes from "./routes";
+import bgColor from "../config/bgColor";
+import textColor from "../config/textColor";
+import header from "../styles/header";
 
 import GroupListScreen from "../screens/GroupListScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
-import CreateGroupScreen from "../screens/CreateGroupScreen";
-import CreateTasksScreen from "../screens/CreateTasksScreen";
-import routes from "./routes";
-import DashboardScreen from "../screens/DashboardScreen";
 
 const Stack = createStackNavigator();
 
 function GroupNavigator() {
+  const navigation = useNavigation();
+
   return (
-    <Stack.Navigator initialRouteName={routes.GROUPS}>
+    <Stack.Navigator
+      initialRouteName={routes.GROUPS}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: bgColor.header,
+        },
+        headerTintColor: textColor.header,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
       <Stack.Screen
         name={routes.GROUPS}
         component={GroupListScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="CreateGroups" component={CreateGroupScreen} />
+        options={{
+          headerLeft: () => (
+            <Pressable
+              onPress={() => navigation.openDrawer()}
+              style={header.leftBtn}
+            >
+              <MaterialIcons name="menu" size={40} />
+            </Pressable>
+          ),
+        }}
+      ></Stack.Screen>
       <Stack.Screen
-        name="GroupDetails"
+        name={routes.GROUP_DETAILS}
         component={GroupDetailScreen}
-        options={({ route }) => ({ title: route.params.name })}
+        options={({ route }) => ({ title: route.params.group_name })}
       />
-      <Stack.Screen name="CreateTasks" component={CreateTasksScreen} />
     </Stack.Navigator>
   );
 }

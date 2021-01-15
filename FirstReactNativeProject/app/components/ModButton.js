@@ -1,6 +1,8 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
+import border from "../config/border";
+
 function ModButton({ style, textStyle, title, ...otherProps }) {
   return (
     <TouchableOpacity style={[styles.container, style]} {...otherProps}>
@@ -12,8 +14,8 @@ function ModButton({ style, textStyle, title, ...otherProps }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: border.width,
+    borderRadius: border.radius,
     alignItems: "center",
   },
 });

@@ -3,15 +3,22 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import MainNavigator from "./MainNavigator";
+
+import routes from "./routes";
 
 const Stack = createStackNavigator();
 
 function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Navigator initialRouteName={routes.LOGIN}>
+      <Stack.Screen
+        name={routes.LOGIN}
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen name={routes.REGISTER} component={RegisterScreen} />
     </Stack.Navigator>
   );
 }

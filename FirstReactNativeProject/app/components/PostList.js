@@ -16,9 +16,7 @@ function PostList({ listData, deletion, onRefresh, request }) {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <PostCard
-          title={item.title}
-          message={item.message}
-          postId={item.id}
+          item={item}
           deletion={deletion}
           request={request}
           requestPress={() => navigation.navigate(routes.SEND_REQUESTS, item)}

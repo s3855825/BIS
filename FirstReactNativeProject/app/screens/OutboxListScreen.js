@@ -1,17 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
-import colors from "../config/colors";
+import bgColor from "../config/bgColor";
 
 import ScreenHeader from "../components/ScreenHeader";
 import Screen from "../components/Screen";
-import ModButton from "../components/ModButton";
 import RequestList from "../components/RequestList";
 import requestsApi from "../api/requests";
 import useApi from "../hooks/useApi";
 import AuthContext from "../auth/context";
 
-export default function OutboxListScreen({ navigation }) {
+export default function OutboxListScreen() {
   const { user } = useContext(AuthContext);
   const { data: allOutbox, request: loadForOutbox } = useApi(
     requestsApi.getOutbox
@@ -26,8 +25,7 @@ export default function OutboxListScreen({ navigation }) {
   };
 
   return (
-    <Screen style={styles.container}>
-      <ScreenHeader title="Sent Request" />
+    <View style={styles.container}>
       <View style={styles.body}>
         <RequestList
           listData={allOutbox}
@@ -35,14 +33,14 @@ export default function OutboxListScreen({ navigation }) {
           onRefresh={() => loadOutbox()}
         />
       </View>
-    </Screen>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.screen,
+    backgroundColor: bgColor.screen,
   },
   body: {
     flex: 1,
