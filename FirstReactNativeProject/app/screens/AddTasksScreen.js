@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
@@ -11,6 +11,8 @@ import ModFormField from "../components/ModFormField";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
 import Screen from "../components/Screen";
+import ErrorMessage from "../components/ErrorMessage";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
   task_name: Yup.string().required().min(1).max(500).label("Name"),
@@ -25,9 +27,10 @@ function AddTasksScreen() {
   const { user } = useContext(AuthContext);
   const route = useRoute();
   const { id } = route.params;
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async ({ task_name, task_description }) => {
-    console.log(task_name, task_description, id, user.id);
     const result = await groupsApi.addTask(
       task_name,
       task_description,
@@ -35,12 +38,9 @@ function AddTasksScreen() {
       user.id
     );
 
-    if (!result.ok) {
-      console.log(result.data + result.problem + result.errors);
-      Alert.alert("Error!", "Could not create task.");
-      return;
-    }
-    Alert.alert("Success!", "Task added");
+    console.log(result.data);
+    setError(!result.ok);
+    setSuccess(result.ok);
   };
 
   return (
@@ -51,6 +51,8 @@ function AddTasksScreen() {
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
+          <ErrorMessage error="Failed to add task" visible={error} />
+          <ErrorMessage error="Task added" visible={success} />
           <ModFormField placeholder="Name" name="task_name" style={modal.bar} />
           <ModFormField
             placeholder="Description"

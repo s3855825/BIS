@@ -11,6 +11,7 @@ import header from "../styles/header";
 
 import InboxListScreen from "../screens/InboxListScreen";
 import RequestDetailsScreen from "../screens/RequestDetailsScreen";
+import TouchableIcon from "../components/TouchableIcon";
 
 const Stack = createStackNavigator();
 
@@ -36,12 +37,12 @@ function InboxNavigator() {
         options={{
           title: "Join Request",
           headerLeft: () => (
-            <Pressable
+            <TouchableIcon
               onPress={() => navigation.openDrawer()}
               style={header.leftBtn}
-            >
-              <MaterialIcons name="menu" size={40} />
-            </Pressable>
+              size={40}
+              matIcon="menu"
+            />
           ),
         }}
       />

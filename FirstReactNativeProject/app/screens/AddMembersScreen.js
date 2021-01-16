@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
@@ -10,35 +10,37 @@ import ModFormField from "../components/ModFormField";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
 import Screen from "../components/Screen";
+import ErrorMessage from "../components/ErrorMessage";
 
 const validationSchema = Yup.object().shape({
-  friendcode: Yup.string().required().min(10).max(10).label("Friendcode"),
+  friendcode: Yup.number().required().label("Friendcode"),
 });
 
 function AddMembersScreen() {
   const route = useRoute();
   const { id } = route.params;
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async ({ friendcode }) => {
     const result = await groupsApi.addMember(id, friendcode);
 
-    if (!result.ok) {
-      console.log(result.data + result.problem + result.errors);
-      Alert.alert("Error!", "Could not add member.");
-      return;
-    }
-
-    Alert.alert("Success!", "Member added");
+    console.log(result.data);
+    setError(!result.ok);
+    setSuccess(result.ok);
   };
 
   return (
     <Screen style={modal.container}>
       <View style={modal.modalView}>
+        <ErrorMessage error="Failed to add member" visible={error} />
+        <ErrorMessage error="Member added" visible={success} />
         <ModForm
           initialValues={{ friendcode: "" }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
+          {}
           <ModFormField
             placeholder="Friendcode"
             name="friendcode"

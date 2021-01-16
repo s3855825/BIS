@@ -2,18 +2,14 @@ import React, { useContext } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
-import Screen from "../components/Screen";
-import ModButton from "../components/ModButton";
-import AuthContext from "../auth/context";
-import ScreenHeader from "../components/ScreenHeader";
 import ModForm from "../components/ModForm";
 import ModFormField from "../components/ModFormField";
 import SubmitButton from "../components/SubmitButton";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  username: Yup.string().required().label("Username"),
-  password: Yup.string().required().min(8).label("Password"),
+  email: Yup.string().email().label("Email"),
+  username: Yup.string().label("Username"),
+  password: Yup.string().min(8).label("Password"),
 });
 
 function SettingsScreen({ navigation }) {
@@ -37,6 +33,7 @@ function SettingsScreen({ navigation }) {
           keyboardType="email-address"
           textContentType="emailAddress"
           name="email"
+          matIcon="email"
           style={styles.bar}
         />
         <Text>Edit username:</Text>
@@ -45,6 +42,7 @@ function SettingsScreen({ navigation }) {
           autoCorrect={false}
           placeholder="username"
           name="username"
+          antIcon="user"
           style={styles.bar}
         />
         <Text>Edit password:</Text>
@@ -54,6 +52,7 @@ function SettingsScreen({ navigation }) {
           placeholder="password"
           textContentType="password"
           name="password"
+          matIcon="lock"
           secureTextEntry
           style={styles.bar}
         />

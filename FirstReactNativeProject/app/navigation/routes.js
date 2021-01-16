@@ -7,6 +7,7 @@ export default Object.freeze({
   CREATE_GROUPS: "CreateGroups",
   GROUP_LIST: "GroupList",
   GROUP_DETAILS: "GroupDetails",
+  GROUP_INFO: "GroupInfo",
   INBOX_LIST: "InboxList",
   OUTBOX_LIST: "OutboxList",
   REQUEST_DETAILS: "RequestDetails",

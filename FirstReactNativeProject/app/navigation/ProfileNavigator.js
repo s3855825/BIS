@@ -11,6 +11,7 @@ import header from "../styles/header";
 
 import ProfileScreen from "../screens/ProfileScreen";
 import PostDetailScreen from "../screens/PostDetailScreen";
+import TouchableIcon from "../components/TouchableIcon";
 
 const Stack = createStackNavigator();
 
@@ -35,12 +36,12 @@ function ProfileNavigator() {
         component={ProfileScreen}
         options={{
           headerLeft: () => (
-            <Pressable
+            <TouchableIcon
               onPress={() => navigation.openDrawer()}
               style={header.leftBtn}
-            >
-              <MaterialIcons name="menu" size={40} />
-            </Pressable>
+              size={40}
+              matIcon="menu"
+            />
           ),
         }}
       />

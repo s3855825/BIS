@@ -4,17 +4,31 @@ import { useFormikContext } from "formik";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import ModTextInput from "./ModTextInput";
+import ErrorMessage from "./ErrorMessage";
 
-function SearchBar({ name, onPress, ...otherProps }) {
-  const { handleChange, handleSubmit } = useFormikContext();
+function SearchBar({ name, ...otherProps }) {
+  const {
+    handleChange,
+    errors,
+    setFieldTouched,
+    touched,
+    handleSubmit,
+  } = useFormikContext();
 
   return (
-    <View style={styles.container}>
-      <ModTextInput onChangeText={handleChange(name)} {...otherProps} />
-      <TouchableOpacity onPress={handleSubmit} style={styles.okBtn}>
-        <MaterialIcons name="search" size={30} />
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={styles.container}>
+        <ModTextInput
+          onBlur={() => setFieldTouched(name)}
+          onChangeText={handleChange(name)}
+          {...otherProps}
+        />
+        <TouchableOpacity onPress={handleSubmit} style={styles.okBtn}>
+          <MaterialIcons name="search" size={30} />
+        </TouchableOpacity>
+      </View>
+      <ErrorMessage error={errors[name]} visible={touched[name]} />
+    </>
   );
 }
 

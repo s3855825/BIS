@@ -13,7 +13,8 @@ function TouchableText({ children, style, onPress, ...otherProps }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
+    fontStyle: "italic",
     fontSize: 16,
   },
 });

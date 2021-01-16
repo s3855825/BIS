@@ -1,34 +1,42 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
-import bgColor from "../config/bgColor";
+import barList from "../styles/barList";
 
-import ScreenHeader from "../components/ScreenHeader";
-import Screen from "../components/Screen";
 import RequestList from "../components/RequestList";
 import requestsApi from "../api/requests";
 import useApi from "../hooks/useApi";
 import AuthContext from "../auth/context";
+import ActivityIndicator from "../components/ActivityIndicator";
+import ErrorMessage from "../components/ErrorMessage";
+import TouchableText from "../components/TouchableText";
 
 export default function OutboxListScreen() {
   const { user } = useContext(AuthContext);
-  const { data: allOutbox, request: loadForOutbox } = useApi(
-    requestsApi.getOutbox
-  );
+  const { data, loading, error, request } = useApi(requestsApi.getOutbox);
 
   useEffect(() => {
     loadOutbox();
   }, []);
 
   const loadOutbox = () => {
-    loadForOutbox(user.id);
+    request(user.id);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.body}>
+    <View style={barList.container}>
+      <ActivityIndicator visible={loading} />
+
+      {error && (
+        <View style={barList.loadErrorArea}>
+          <ErrorMessage error="Could not load requests" visible={error} />
+          <TouchableText onPress={loadOutbox}>Retry</TouchableText>
+        </View>
+      )}
+
+      <View style={barList.body}>
         <RequestList
-          listData={allOutbox}
+          listData={data}
           status={true}
           onRefresh={() => loadOutbox()}
         />
@@ -36,14 +44,3 @@ export default function OutboxListScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: bgColor.screen,
-  },
-  body: {
-    flex: 1,
-    padding: 20,
-  },
-});

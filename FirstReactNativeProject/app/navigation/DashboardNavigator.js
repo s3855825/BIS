@@ -1,8 +1,7 @@
 import React from "react";
-import { Pressable, StyleSheet, Alert } from "react-native";
+import { Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 import routes from "./routes";
 import bgColor from "../config/bgColor";
@@ -12,7 +11,7 @@ import header from "../styles/header";
 import DashboardScreen from "../screens/DashboardScreen";
 import PostDetailScreen from "../screens/PostDetailScreen";
 import SendRequestScreen from "../screens/SendRequestScreen";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import TouchableIcon from "../components/TouchableIcon";
 
 const Stack = createStackNavigator();
 
@@ -52,20 +51,20 @@ function DashboardNavigator() {
         component={DashboardScreen}
         options={{
           headerLeft: () => (
-            <Pressable
+            <TouchableIcon
               onPress={() => navigation.openDrawer()}
               style={header.leftBtn}
-            >
-              <MaterialIcons name="menu" size={40} />
-            </Pressable>
+              matIcon="menu"
+              size={40}
+            />
           ),
           headerRight: () => (
-            <TouchableOpacity
+            <TouchableIcon
               onPress={showConfirmation}
               style={header.rightBtn}
-            >
-              <MaterialIcons name="add" size={40} />
-            </TouchableOpacity>
+              size={40}
+              matIcon="add"
+            />
           ),
         }}
       />
@@ -75,15 +74,12 @@ function DashboardNavigator() {
         options={({ route }) => ({
           title: route.params.title,
           headerRight: () => (
-            <TouchableOpacity
+            <TouchableIcon
               onPress={() => navigation.navigate(routes.SEND_REQUESTS)}
-            >
-              <MaterialCommunityIcons
-                name="email-edit"
-                size={30}
-                style={header.rightBtn}
-              />
-            </TouchableOpacity>
+              style={header.rightBtn}
+              size={30}
+              matComIcon="email-edit"
+            />
           ),
         })}
       />

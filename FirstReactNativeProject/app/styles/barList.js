@@ -18,9 +18,14 @@ export default {
     paddingRight: 50,
     paddingTop: 10,
   },
-  postArea: {
+  listArea: {
     flex: 1,
-    marginTop: 20,
-    marginHorizontal: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+  },
+  loadErrorArea: {
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 };

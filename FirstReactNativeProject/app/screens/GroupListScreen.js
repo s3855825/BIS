@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { View, Modal, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { View, Modal } from "react-native";
 
 import AuthContext from "../auth/context";
 import groupsApi from "../api/groups";
@@ -10,28 +9,30 @@ import header from "../styles/header";
 
 import GroupList from "../components/GroupList";
 import CreateGroupScreen from "./CreateGroupScreen";
+import TouchableIcon from "../components/TouchableIcon";
+import ActivityIndicator from "../components/ActivityIndicator";
+import ErrorMessage from "../components/ErrorMessage";
+import TouchableText from "../components/TouchableText";
 
-export default function App({ route, navigation }) {
+export default function App({ navigation }) {
   const { user } = useContext(AuthContext);
   const [modalOn, setModalOn] = useState(false);
 
-  const { data: allData, request: loadForData } = useApi(
-    groupsApi.getUserGroups
-  );
+  const { data, loading, error, request } = useApi(groupsApi.getUserGroups);
 
   const loadData = () => {
-    loadForData(user.id);
+    request(user.id);
   };
 
   const loadRightBtn = () => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
+        <TouchableIcon
           onPress={() => setModalOn(true)}
           style={header.rightBtn}
-        >
-          <MaterialIcons name="add" size={40} />
-        </TouchableOpacity>
+          size={40}
+          matIcon="add"
+        />
       ),
     });
   };
@@ -43,11 +44,16 @@ export default function App({ route, navigation }) {
 
   return (
     <View style={barList.container}>
-      <View style={barList.body}>
-        <View style={barList.groupArea}>
-          <GroupList groupData={allData} onRefresh={loadData} />
+      <ActivityIndicator visible={loading} />
+
+      {error && (
+        <View style={barList.loadErrorArea}>
+          <ErrorMessage error="Could not load groups" visible={error} />
+          <TouchableText onPress={loadData}>Retry</TouchableText>
         </View>
-      </View>
+      )}
+
+      <GroupList groupData={data} onRefresh={loadData} />
 
       <Modal
         visible={modalOn}

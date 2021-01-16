@@ -54,6 +54,7 @@ function LoginScreen({ navigation }) {
           autoCorrect={false}
           placeholder="username"
           name="username"
+          antIcon="user"
           style={styles.bar}
         />
         <ModFormField
@@ -63,6 +64,7 @@ function LoginScreen({ navigation }) {
           textContentType="password"
           secureTextEntry
           name="password"
+          matIcon="lock"
           style={styles.bar}
         />
         <SubmitButton style={styles.bar} title="Confirm" />

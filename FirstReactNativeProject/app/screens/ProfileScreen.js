@@ -1,40 +1,50 @@
-import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import React, { useEffect, useContext } from "react";
+import { StyleSheet, View } from "react-native";
+
+import AuthContext from "../auth/context";
+import postsApi from "../api/posts";
+import useApi from "../hooks/useApi";
 
 import ModText from "../components/ModText";
-import Screen from "../components/Screen";
-import postsApi from "../api/posts";
-import ScreenHeader from "../components/ScreenHeader";
-import ModButton from "../components/ModButton";
-import AuthContext from "../auth/context";
 import PostList from "../components/PostList";
-import useApi from "../hooks/useApi";
+import ActivityIndicator from "../components/ActivityIndicator";
+import TouchableText from "../components/TouchableText";
+import ErrorMessage from "../components/ErrorMessage";
 
 function ProfileScreen() {
   const { user } = useContext(AuthContext);
-  const { data: posts, request: loadForPosts } = useApi(postsApi.getUserPosts);
+  const { data, loading, error, request } = useApi(postsApi.getUserPosts);
 
   useEffect(() => {
     loadPosts();
   }, []);
 
   const loadPosts = () => {
-    loadForPosts(user.id);
+    request(user.id);
   };
 
   return (
     <View style={styles.container}>
+      <ActivityIndicator visible={loading} />
+
       <View style={styles.info}>
         <ModText>Username: {user.username}</ModText>
         <ModText>Email: {user.email}</ModText>
-        <ModText>Friend Code: {user.friendcode}</ModText>
+        <ModText>Friendcode: {user.friendcode}</ModText>
       </View>
 
       <ModText>Your posts:</ModText>
 
+      {error && (
+        <View style={styles.loadErrorArea}>
+          <ErrorMessage error="Could not load posts" visible={error} />
+          <TouchableText onPress={loadPosts}>Retry</TouchableText>
+        </View>
+      )}
+
       <View style={styles.posts}>
         <PostList
-          listData={posts}
+          listData={data}
           deletion={true}
           request={false}
           onRefresh={loadPosts}
@@ -57,6 +67,11 @@ const styles = StyleSheet.create({
   posts: {
     flex: 1,
     marginTop: 10,
+  },
+  loadErrorArea: {
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

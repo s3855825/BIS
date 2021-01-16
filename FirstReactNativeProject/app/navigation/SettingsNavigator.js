@@ -11,6 +11,7 @@ import header from "../styles/header";
 
 import SettingsScreen from "../screens/SettingsScreen";
 import AboutScreen from "../screens/AboutScreen";
+import TouchableIcon from "../components/TouchableIcon";
 
 const Stack = createStackNavigator();
 
@@ -35,12 +36,12 @@ function SettingsNavigator() {
         component={SettingsScreen}
         options={{
           headerLeft: () => (
-            <Pressable
+            <TouchableIcon
               onPress={() => navigation.openDrawer()}
               style={header.leftBtn}
-            >
-              <MaterialIcons name="menu" size={40} />
-            </Pressable>
+              size={40}
+              matIcon="menu"
+            />
           ),
         }}
       />

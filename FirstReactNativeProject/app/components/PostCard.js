@@ -24,7 +24,7 @@ function PostCard({ item, request, cardPress, requestPress, deletion }) {
 
   const showConfirmation = () => {
     Alert.alert(
-      "Delete this post",
+      "Delete post",
       "Are you sure?",
       [
         {

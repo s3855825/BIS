@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, View } from "react-native";
 import * as Yup from "yup";
 
 import groupsApi from "../api/groups";
 import AuthContext from "../auth/context";
 import modal from "../styles/modal";
+import routes from "../navigation/routes";
 
 import ModForm from "../components/ModForm";
 import ModFormField from "../components/ModFormField";
 import SubmitButton from "../components/SubmitButton";
 import Screen from "../components/Screen";
+import ErrorMessage from "../components/ErrorMessage";
 
 const validationSchema = Yup.object().shape({
   group_name: Yup.string().required().min(1).max(500).label("Group Name"),
@@ -17,30 +19,30 @@ const validationSchema = Yup.object().shape({
 
 function CreateGroupScreen({ navigation }) {
   const { user } = useContext(AuthContext);
+  const [addGroupError, setAddGroupError] = useState(false);
+  const [addMemberError, setAddMemberError] = useState(false);
 
   const handleSubmit = async ({ group_name }) => {
     // request to add group
-    const result = await groupsApi.addGroup(group_name);
+    const groupRes = await groupsApi.addGroup(group_name);
 
-    if (!result.ok) {
-      console.log(result.problem);
-      Alert.alert("Error!", "Can not create group.");
-      return;
+    if (!groupRes.ok) {
+      console.log(groupRes.data);
+      return setAddGroupError(true);
     }
 
     // request to add current account into created group
-    const response = await groupsApi.addMember(result.data.id, user.friendcode);
+    const memberRes = await groupsApi.addMember(
+      groupRes.data.id,
+      user.friendcode
+    );
 
-    if (!response.ok) {
-      console.log(response.problem + response.error);
-      Alert.alert(
-        "Error!",
-        "Group created but could not add yourself into group."
-      );
-      return;
+    if (!memberRes.ok) {
+      console.log(groupRes + "\n" + memberRes.data);
+      return setAddMemberError(true);
     }
 
-    navigation.navigate("GroupDetails", result.data);
+    navigation.navigate(routes.CREATE_GROUPS, groupRes.data);
   };
 
   return (
@@ -51,6 +53,14 @@ function CreateGroupScreen({ navigation }) {
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
+          <ErrorMessage
+            error="Failed to create group"
+            visible={addGroupError}
+          />
+          <ErrorMessage
+            error="Failed to assign yourself into group"
+            visible={addMemberError}
+          />
           <ModFormField
             placeholder="Group Name"
             name="group_name"

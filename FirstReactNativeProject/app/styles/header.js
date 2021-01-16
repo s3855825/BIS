@@ -1,8 +1,8 @@
 export default {
   leftBtn: {
-    paddingLeft: 8,
+    paddingLeft: 10,
   },
   rightBtn: {
-    paddingRight: 5,
+    paddingRight: 15,
   },
 };
