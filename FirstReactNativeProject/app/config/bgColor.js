@@ -1,7 +1,7 @@
 export default {
-  main: "lightyellow",
+  main: "white",
   header: "lightgreen",
   button: "white",
   input: "lightblue",
-  modal: "lightblue",
+  modal: "white",
 };

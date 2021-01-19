@@ -2,6 +2,7 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import border from "../config/border";
+import bgColor from "../config/bgColor";
 
 function ModButton({ style, textStyle, title, ...otherProps }) {
   return (
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     borderWidth: border.width,
     borderRadius: border.radius,
     alignItems: "center",
+    backgroundColor: bgColor.button,
   },
 });
 

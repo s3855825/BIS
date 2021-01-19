@@ -4,7 +4,6 @@ import { View, Text, ScrollView } from "react-native";
 import requestsApi from "../api/requests";
 import details from "../styles/details";
 
-import Screen from "../components/Screen";
 import ModButton from "../components/ModButton";
 
 function RequestDetailsScreen({ route }) {
@@ -32,7 +31,7 @@ function RequestDetailsScreen({ route }) {
   };
 
   return (
-    <Screen style={details.container}>
+    <View style={details.container}>
       <ScrollView>
         <Text style={details.titleText}>{requestData.request_title}</Text>
         <Text style={details.bodyText}>
@@ -58,7 +57,7 @@ function RequestDetailsScreen({ route }) {
           <Text style={details.statusText}>Status: {requestData.status}</Text>
         )}
       </ScrollView>
-    </Screen>
+    </View>
   );
 }
 

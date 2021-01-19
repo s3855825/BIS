@@ -30,9 +30,7 @@ function LoginScreen({ navigation }) {
     }
     setLoginFailed(false);
     console.log(response.data);
-    const { email, friendcode } = response.data;
-
-    const id = response.data.token.split(": ")[0];
+    const { email, friendcode, id } = response.data;
     const token = response.data.token.split(": ")[1];
 
     setUser({ username, email, id, token, friendcode });

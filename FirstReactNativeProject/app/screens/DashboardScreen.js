@@ -19,6 +19,8 @@ const validationSchema = Yup.object().shape({
 
 export default function DashboardScreen({ navigation }) {
   const [searching, setSearching] = useState(false);
+  const [havePost, setHavePost] = useState();
+  const [haveSearch, setHaveSearch] = useState();
 
   const {
     data: allData,
@@ -26,6 +28,7 @@ export default function DashboardScreen({ navigation }) {
     error: errorAll,
     request: loadForData,
   } = useApi(postsApi.getPosts);
+
   const {
     data: searchData,
     loading: loadSearch,
@@ -39,11 +42,29 @@ export default function DashboardScreen({ navigation }) {
 
   const loadData = () => {
     loadForData();
+
+    if (Array.isArray(allData)) {
+      setHavePost(true);
+    } else {
+      setHavePost(false);
+    }
+
+    console.log(Array.isArray(allData), havePost, searching);
+
+    setHaveSearch(true);
     setSearching(false);
   };
 
   const handleSubmit = ({ searchText }) => {
     searchForData(searchText);
+
+    if (Array.isArray(allData)) {
+      setHaveSearch(true);
+    } else {
+      setHaveSearch(false);
+    }
+
+    setHavePost(true);
     setSearching(true);
   };
 
@@ -66,23 +87,29 @@ export default function DashboardScreen({ navigation }) {
         </ModForm>
       </View>
 
-      {!searching
-        ? errorAll
-        : errorSearch && (
-            <View style={barList.loadErrorArea}>
-              <ErrorMessage
-                error={
-                  !searching
-                    ? "Could not load posts"
-                    : "Could not get search result"
-                }
-                visible={!searching ? errorAll : errorSearch}
-              />
-              <TouchableText onPress={!searching ? loadData : handleSubmit}>
-                Retry
-              </TouchableText>
-            </View>
-          )}
+      {(!searching ? errorAll || !havePost : errorSearch || !haveSearch) && (
+        <View style={barList.loadErrorArea}>
+          <ErrorMessage
+            error={
+              !searching
+                ? "Could not load posts"
+                : "Could not get search result"
+            }
+            visible={!searching ? errorAll : errorSearch}
+          />
+          <ErrorMessage
+            error={
+              !searching
+                ? "There isn't any post yet"
+                : "There is no result that matches your search"
+            }
+            visible={!searching ? !havePost : !haveSearch}
+          />
+          <TouchableText onPress={!searching ? loadData : handleSubmit}>
+            Retry
+          </TouchableText>
+        </View>
+      )}
 
       <View style={barList.listArea}>
         <PostList

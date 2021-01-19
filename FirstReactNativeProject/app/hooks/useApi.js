@@ -14,7 +14,7 @@ export default useApi = (apiFunc) => {
       console.log(response.problem + response.error + response.data);
       return setError(true);
     }
-    console.log("OK");
+    console.log("OK1");
     console.log(response.data);
     setError(false);
     setData(response.data);

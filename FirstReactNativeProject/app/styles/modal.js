@@ -1,4 +1,5 @@
 import border from "../config/border";
+import bgColor from "../config/bgColor";
 
 export default {
   container: {
@@ -13,7 +14,7 @@ export default {
   modalView: {
     margin: 20,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: bgColor.modal,
     borderRadius: border.radius,
     alignItems: "center",
     elevation: 10,

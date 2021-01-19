@@ -18,4 +18,6 @@ export default Object.freeze({
   INBOX: "Inbox",
   OUTBOX: "Outbox",
   SEND_REQUESTS: "SendRequests",
+  TASK_DETAILS: "TaskDetails",
+  CREATE_REVIEWS: "CreateReviews",
 });

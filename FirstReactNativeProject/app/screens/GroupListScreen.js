@@ -40,6 +40,7 @@ export default function App({ navigation }) {
   useEffect(() => {
     loadRightBtn();
     loadData();
+    console.log(data);
   }, []);
 
   return (

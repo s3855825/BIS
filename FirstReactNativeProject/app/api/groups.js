@@ -22,6 +22,9 @@ const addTask = (task_name, task_description, groupId, author) =>
     author,
   });
 
+const getGroupTasks = (group_id, task_id) =>
+  client.get(endpoint + group_id + "/tasks/" + task_id);
+
 export default {
   getGroups,
   getUserGroups,
@@ -30,4 +33,5 @@ export default {
   getTasks,
   addTask,
   addMember,
+  getGroupTasks,
 };

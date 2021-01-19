@@ -11,6 +11,8 @@ import GroupListScreen from "../screens/GroupListScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import GroupInfoScreen from "../screens/GroupInfoScreen";
 import TouchableIcon from "../components/TouchableIcon";
+import TaskDetailsScreen from "../screens/TaskDetailsScreen";
+import AddReviewsScreen from "../screens/AddReviewsScreen";
 
 const Stack = createStackNavigator();
 
@@ -65,6 +67,16 @@ function GroupNavigator() {
         name={routes.GROUP_INFO}
         options={{ title: "Info" }}
         component={GroupInfoScreen}
+      />
+      <Stack.Screen
+        name={routes.TASK_DETAILS}
+        options={{ title: "Details" }}
+        component={TaskDetailsScreen}
+      />
+      <Stack.Screen
+        name={routes.CREATE_REVIEWS}
+        options={{ title: "Reviews" }}
+        component={AddReviewsScreen}
       />
     </Stack.Navigator>
   );

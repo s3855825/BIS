@@ -16,16 +16,21 @@ const validationSchema = Yup.object().shape({
   friendcode: Yup.number().required().label("Friendcode"),
 });
 
-function AddMembersScreen() {
+function AddMembersScreen({ onMemberSuccess }) {
   const route = useRoute();
   const { id } = route.params;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const passedIn = () => {
+    console.log("helo");
+  };
+
   const handleSubmit = async ({ friendcode }) => {
     const result = await groupsApi.addMember(id, friendcode);
 
-    console.log(result.data);
+    if (result.ok) passedIn();
+    // console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
   };

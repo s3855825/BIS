@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, Modal } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 
 import bgColor from "../config/bgColor";
 import useApi from "../hooks/useApi";
@@ -10,15 +17,19 @@ import ListSeparator from "../components/ListSeparator";
 import AddTasksScreen from "./AddTasksScreen";
 import TouchableIcon from "../components/TouchableIcon";
 import ActivityIndicator from "../components/ActivityIndicator";
+import routes from "../navigation/routes";
+import TeaContext from "../auth/context";
 
-export default function GroupDetailScreen({ route }) {
+export default function GroupDetailScreen({ route, navigation }) {
   const groupInfo = route.params;
   const [taskModal, setTaskModal] = useState(false);
 
   const { data, loading, request } = useApi(groupsApi.getTasks);
 
   useEffect(() => {
+    console.log(groupInfo.id);
     request(groupInfo.id);
+    console.log(data);
   }, []);
 
   return (
@@ -40,8 +51,16 @@ export default function GroupDetailScreen({ route }) {
         <FlatList
           style={{ paddingHorizontal: 20 }}
           data={data}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Text>{item.task}</Text>}
+          keyExtractor={(item) => item.task_id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(routes.TASK_DETAILS, { item, groupInfo })
+              }
+            >
+              <Text>{item.task_name}</Text>
+            </TouchableOpacity>
+          )}
           ItemSeparatorComponent={ListSeparator}
         />
 
@@ -49,6 +68,7 @@ export default function GroupDetailScreen({ route }) {
           <ModText>Your group doesn't have any task yet</ModText>
         )}
       </View>
+
       <Modal
         visible={taskModal}
         animationType="fade"
@@ -57,7 +77,9 @@ export default function GroupDetailScreen({ route }) {
         }}
         transparent
       >
+        {/* <TeaContext.Provider value={{ setTaskModal }}> */}
         <AddTasksScreen />
+        {/* </TeaContext.Provider> */}
       </Modal>
     </View>
   );

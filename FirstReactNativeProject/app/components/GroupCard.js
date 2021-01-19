@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,7 +8,26 @@ import {
   TouchableHighlight,
 } from "react-native";
 
-function GroupCard({ onPress, data }) {
+import groupsApi from "../api/groups";
+
+const members = [
+  {
+    member_id: 2,
+    member_name: "test1",
+  },
+  {
+    member_id: 2,
+    member_name: "test1",
+  },
+  {
+    member_id: 2,
+    member_name: "test1",
+  },
+];
+
+function GroupCard({ onPress, data: groupInfo }) {
+  const { data, loading, request } = useApi(groupsApi.getMembers);
+
   // const renderGroupMembers = (group) => {
   //   if(group.members) {
   //     return (
@@ -24,6 +43,11 @@ function GroupCard({ onPress, data }) {
   //   return null;
   // }
 
+  useEffect(() => {
+    request(groupInfo.id);
+    console.log(data.length);
+  }, []);
+
   return (
     <TouchableHighlight
       underlayColor="lightgrey"
@@ -31,11 +55,16 @@ function GroupCard({ onPress, data }) {
       onPress={onPress}
     >
       <View style={styles.container}>
-        {/* <Image source={{uri:Group.image}} style={styles.avatar}/> */}
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>
+            {groupInfo.group_name[0].toUpperCase()}
+          </Text>
+        </View>
+
         <View style={styles.content}>
           <View style={styles.mainContent}>
             <View style={styles.text}>
-              <Text style={styles.groupName}>{data.group_name}</Text>
+              <Text style={styles.groupName}>{groupInfo.group_name}</Text>
             </View>
             <Text style={styles.countMembers}>
               {/* {Group.countMembers} members */}
@@ -53,16 +82,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   container: {
-    padding: 16,
+    padding: 10,
     flexDirection: "row",
     borderBottomWidth: 1,
     borderColor: "#FFFFFF",
     alignItems: "flex-start",
   },
   avatar: {
-    width: 55,
-    height: 55,
-    borderRadius: 25,
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarText: {
+    fontSize: 30,
+    color: "white",
   },
   text: {
     marginBottom: 5,
@@ -90,8 +126,8 @@ const styles = StyleSheet.create({
   countMembers: {
     color: "#20B2AA",
   },
-  groupNames: {
-    fontSize: 23,
+  groupName: {
+    fontSize: 22,
     color: "#1E90FF",
   },
   groupMembersContent: {

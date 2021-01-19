@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Alert, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
 
 import groupsApi from "../api/groups";
@@ -17,7 +18,8 @@ const validationSchema = Yup.object().shape({
   group_name: Yup.string().required().min(1).max(500).label("Group Name"),
 });
 
-function CreateGroupScreen({ navigation }) {
+function CreateGroupScreen() {
+  const navigation = useNavigation();
   const { user } = useContext(AuthContext);
   const [addGroupError, setAddGroupError] = useState(false);
   const [addMemberError, setAddMemberError] = useState(false);
@@ -42,7 +44,8 @@ function CreateGroupScreen({ navigation }) {
       return setAddMemberError(true);
     }
 
-    navigation.navigate(routes.CREATE_GROUPS, groupRes.data);
+    console.log(groupRes.data);
+    navigation.navigate(routes.GROUP_DETAILS, groupRes.data);
   };
 
   return (

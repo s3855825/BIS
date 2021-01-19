@@ -4,7 +4,7 @@ import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
 
 import groupsApi from "../api/groups";
-import AuthContext from "../auth/context";
+import TeaContext from "../auth/context";
 import modal from "../styles/modal";
 
 import ModFormField from "../components/ModFormField";
@@ -24,9 +24,9 @@ const validationSchema = Yup.object().shape({
 });
 
 function AddTasksScreen() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(TeaContext);
   const route = useRoute();
-  const { id } = route.params;
+  const groupInfo = route.params;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -34,13 +34,19 @@ function AddTasksScreen() {
     const result = await groupsApi.addTask(
       task_name,
       task_description,
-      id,
+      groupInfo.id,
       user.id
     );
 
+    if (!result.ok) {
+      setError(true);
+    }
+
+    console.log(task_name, task_description, groupInfo.id, user.id);
     console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
+    // setTaskModal(false);
   };
 
   return (
