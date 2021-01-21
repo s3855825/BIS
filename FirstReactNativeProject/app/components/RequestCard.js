@@ -6,17 +6,23 @@ import bgColor from "../config/bgColor";
 import textColor from "../config/textColor";
 import card from "../styles/card";
 
-function RequestCard({ title, message, onPress, id, status }) {
+function RequestCard({ onPress, status, isInbox, data }) {
   return (
     <TouchableOpacity style={card.container} onPress={onPress}>
       <View style={card.headerArea}>
         <View style={card.titleCon}>
-          <Text style={card.titleText}>{title}</Text>
+          <Text style={card.titleText}>{data.request_title}</Text>
         </View>
       </View>
 
+      <View style={card.subHeaderCon}>
+        <Text style={card.subText}>
+          From: {isInbox ? data.sender_name : data.receiver_name}
+        </Text>
+      </View>
+
       <View style={card.bodyArea}>
-        <Text style={card.bodyText}>{message}</Text>
+        <Text style={card.bodyText}>{data.message}</Text>
       </View>
 
       {status && (

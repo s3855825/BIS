@@ -10,22 +10,7 @@ import {
 
 import groupsApi from "../api/groups";
 
-const members = [
-  {
-    member_id: 2,
-    member_name: "test1",
-  },
-  {
-    member_id: 2,
-    member_name: "test1",
-  },
-  {
-    member_id: 2,
-    member_name: "test1",
-  },
-];
-
-function GroupCard({ onPress, data: groupInfo }) {
+function GroupCard({ onPress, data: groupInfo, memberNum }) {
   const { data, loading, request } = useApi(groupsApi.getMembers);
 
   // const renderGroupMembers = (group) => {
@@ -45,8 +30,14 @@ function GroupCard({ onPress, data: groupInfo }) {
 
   useEffect(() => {
     request(groupInfo.id);
-    console.log(data.length);
-  }, []);
+  }, [groupInfo]);
+
+  let memberShow;
+  if (data.length > 1) {
+    memberShow = <Text style={styles.countMembers}>{data.length} members</Text>;
+  } else {
+    memberShow = <Text style={styles.countMembers}>{data.length} member</Text>;
+  }
 
   return (
     <TouchableHighlight
@@ -66,10 +57,7 @@ function GroupCard({ onPress, data: groupInfo }) {
             <View style={styles.text}>
               <Text style={styles.groupName}>{groupInfo.group_name}</Text>
             </View>
-            <Text style={styles.countMembers}>
-              {/* {Group.countMembers} members */}
-            </Text>
-            {/* {renderGroupMembers(Group)} */}
+            {memberShow}
           </View>
         </View>
       </View>
@@ -89,8 +77,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   avatar: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     backgroundColor: "white",
     justifyContent: "center",

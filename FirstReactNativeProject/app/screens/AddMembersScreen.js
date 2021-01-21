@@ -49,6 +49,7 @@ function AddMembersScreen({ onMemberSuccess }) {
           <ModFormField
             placeholder="Friendcode"
             name="friendcode"
+            keyboardType="number-pad"
             style={modal.bar}
           />
           <SubmitButton style={modal.bar} title="Confirm" />

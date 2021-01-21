@@ -23,21 +23,11 @@ const sendRequest = (
     status,
   });
 
-const replyRequest = (
-  title,
-  message,
-  sender,
-  receiver,
-  post,
-  status = "Pending"
-) =>
+const replyRequest = (request_id, response, sender) =>
   client.post(endpoint + sender + "/reply/", {
-    title,
-    message,
+    request_id,
+    response,
     sender,
-    receiver,
-    post,
-    status,
   });
 
 // const approve = (group_id, )

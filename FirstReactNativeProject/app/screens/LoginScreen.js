@@ -10,6 +10,7 @@ import AuthContext from "../auth/context";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
 import ModFormField from "../components/ModFormField";
+import authStorage from "../auth/storage";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required().label("Username"),
@@ -33,6 +34,10 @@ function LoginScreen({ navigation }) {
     const { email, friendcode, id } = response.data;
     const token = response.data.token.split(": ")[1];
 
+    // setUser({ username, email, id, token, friendcode });
+    authStorage.storeUser(
+      JSON.stringify({ username, email, id, token, friendcode })
+    );
     setUser({ username, email, id, token, friendcode });
   };
 

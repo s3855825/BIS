@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import AuthContext from "../auth/context";
@@ -14,6 +14,8 @@ import ErrorMessage from "../components/ErrorMessage";
 
 function ProfileScreen() {
   const { user } = useContext(AuthContext);
+  const [havePost, setHavePost] = useState();
+
   const {
     data: allPosts,
     loading: postLoading,
@@ -31,9 +33,15 @@ function ProfileScreen() {
     loadAll();
   }, []);
 
-  const loadAll = () => {
-    loadForPosts(user.id);
+  const loadAll = async () => {
+    await loadForPosts(user.id);
     loadForUser(user.id);
+
+    if (Array.isArray(allPosts) == false && postError == false) {
+      setHavePost(false);
+    } else {
+      setHavePost(true);
+    }
   };
 
   // const loadUser = () => {
@@ -45,9 +53,9 @@ function ProfileScreen() {
       <ActivityIndicator visible={postLoading} />
 
       <View style={styles.info}>
-        <ModText>Username: {user.username}</ModText>
-        <ModText>Email: {user.email}</ModText>
-        <ModText>Friendcode: {user.friendcode}</ModText>
+        <ModText>Username: {userInfo.username}</ModText>
+        <ModText>Email: {userInfo.email}</ModText>
+        <ModText>Friendcode: {userInfo.friendcode}</ModText>
         <ModText>My score: {userInfo.score}</ModText>
       </View>
 
@@ -59,6 +67,15 @@ function ProfileScreen() {
           <TouchableText onPress={loadPosts}>Retry</TouchableText>
         </View>
       )}
+
+      <View style={styles.loadErrorArea}>
+        <ErrorMessage
+          error="You don't have any post yet"
+          visible={!havePost}
+          color="black"
+          isItalic={true}
+        />
+      </View>
 
       <View style={styles.posts}>
         <PostList

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import React, { useContext, useState } from "react";
+import { View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
 
 import AuthContext from "../auth/context";
 import postsApi from "../api/posts";
+import create from "../styles/create";
 
 import ModForm from "../components/ModForm";
 import ModFormField from "../components/ModFormField";
@@ -16,9 +17,8 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required().min(10).max(255).label("Message"),
 });
 
-function CreatePostScreen() {
+function CreatePostScreen({ route }) {
   const { user } = useContext(AuthContext);
-  const route = useRoute();
   const groupInfo = route.params;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -37,7 +37,7 @@ function CreatePostScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={create.container}>
       <ModForm
         initialValues={{ title: "", message: "" }}
         onSubmit={handleSubmit}
@@ -45,29 +45,17 @@ function CreatePostScreen() {
       >
         <ErrorMessage error="Failed to create post" visible={error} />
         <ErrorMessage error="Post created" visible={success} />
-        <ModFormField placeholder="Title" name="title" style={styles.bar} />
+        <ModFormField placeholder="Title" name="title" style={create.bar} />
         <ModFormField
           placeholder="Message"
           name="message"
-          style={[styles.bar]}
+          style={[create.bar]}
           multiline={true}
         />
-        <SubmitButton style={styles.bar} title="Confirm" />
+        <SubmitButton style={create.bar} title="Confirm" />
       </ModForm>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    alignItems: "center",
-  },
-  bar: {
-    width: "90%",
-    margin: 10,
-  },
-});
 
 export default CreatePostScreen;

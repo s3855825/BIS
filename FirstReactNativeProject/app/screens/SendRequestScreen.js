@@ -4,6 +4,8 @@ import * as Yup from "yup";
 
 import requestsApi from "../api/requests";
 import AuthContext from "../auth/context";
+import create from "../styles/create";
+
 import ModFormField from "../components/ModFormField";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
@@ -25,11 +27,12 @@ function SendRequestScreen({ route }) {
       title,
       message,
       user.id,
-      postInfo.author,
+      postInfo.author_id,
       postInfo.id
     );
 
     if (!result.ok) {
+      console.log(title, message, user.id, postInfo.author, postInfo.id);
       console.log(result.data);
       setError(true);
       setSuccess(false);
@@ -41,7 +44,7 @@ function SendRequestScreen({ route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={create.container}>
       <ModForm
         initialValues={{ title: "", message: "" }}
         onSubmit={handleSubmit}
@@ -49,30 +52,17 @@ function SendRequestScreen({ route }) {
       >
         <ErrorMessage error="Could not send request" visible={error} />
         <ErrorMessage error="Success!" visible={success} />
-        <ModFormField
-          placeholder="title"
-          name="title"
-          style={{ width: "90%", margin: 10 }}
-        />
+        <ModFormField placeholder="title" name="title" style={create.bar} />
         <ModFormField
           placeholder="message"
           name="message"
-          style={{ width: "90%", margin: 10, height: 200 }}
+          style={create.bar}
           multiline={true}
         />
-        <SubmitButton style={{ width: "90%", margin: 10 }} title="Confirm" />
+        <SubmitButton style={create.bar} title="Confirm" />
       </ModForm>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default SendRequestScreen;

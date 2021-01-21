@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 
 import barList from "../styles/barList";
@@ -14,6 +14,7 @@ import TouchableText from "../components/TouchableText";
 export default function OutboxListScreen() {
   const { user } = useContext(AuthContext);
   const { data, loading, error, request } = useApi(requestsApi.getOutbox);
+  const [haveMail, setHaveMail] = useState(true);
 
   useEffect(() => {
     loadOutbox();
@@ -21,6 +22,17 @@ export default function OutboxListScreen() {
 
   const loadOutbox = () => {
     request(user.id);
+
+    if (error) {
+      setHaveMail(true);
+      return;
+    }
+
+    if (!Array.isArray(data)) {
+      setHaveMail(false);
+    } else {
+      setHaveMail(true);
+    }
   };
 
   return (
@@ -34,11 +46,20 @@ export default function OutboxListScreen() {
         </View>
       )}
 
-      <View style={barList.body}>
+      <View style={barList.loadErrorArea}>
+        <ErrorMessage
+          error="Your sent folder is empty"
+          visible={!haveMail}
+          color="black"
+        />
+      </View>
+
+      <View style={barList.listArea}>
         <RequestList
           listData={data}
           status={true}
           onRefresh={() => loadOutbox()}
+          isInbox={false}
         />
       </View>
     </View>

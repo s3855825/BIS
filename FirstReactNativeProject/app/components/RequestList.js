@@ -6,7 +6,7 @@ import PostSeparator from "./PostSeparator";
 import RequestCard from "./RequestCard";
 import routes from "../navigation/routes";
 
-function RequestList({ listData, status = false, onRefresh }) {
+function RequestList({ listData, status = false, onRefresh, isInbox }) {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -16,10 +16,9 @@ function RequestList({ listData, status = false, onRefresh }) {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <RequestCard
-          title={item.request_title}
-          message={item.message}
-          id={item.id}
+          data={item}
           status={status ? item.status : null}
+          isInbox={isInbox}
           onPress={() => navigation.navigate(routes.REQUEST_DETAILS, item)}
         />
       )}

@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, ScrollView } from "react-native";
 
 import requestsApi from "../api/requests";
 import details from "../styles/details";
 
 import ModButton from "../components/ModButton";
+import TeaContext from "../auth/context";
 
 function RequestDetailsScreen({ route }) {
   const requestData = route.params;
+  const { user } = useContext(TeaContext);
   const isSender = requestData.sender_name ? true : false;
 
-  const handleApprove = () => {
-    const response = requestsApi.approve(requestData.id);
+  const handleApprove = async () => {
+    const result = await requestsApi.replyRequest(
+      requestData.id,
+      "approve",
+      user.id
+    );
 
-    if (!response.ok) {
-      console.log(response.problem + response.error + response.data);
+    if (!result.ok) {
+      console.log(result.data);
+      return;
     }
 
     console.log("OK");
   };
 
-  const handleDecline = () => {
-    const response = requestsApi.decline(requestData.id);
+  const handleDecline = async () => {
+    const result = await requestsApi.replyRequest(
+      requestData.id,
+      "decline",
+      user.id
+    );
 
-    if (!response.ok) {
-      console.log(response.problem + response.error + response.data);
+    if (!result.ok) {
+      console.log(result.data);
+      return;
     }
 
     console.log("OK");
@@ -35,8 +47,7 @@ function RequestDetailsScreen({ route }) {
       <ScrollView>
         <Text style={details.titleText}>{requestData.request_title}</Text>
         <Text style={details.bodyText}>
-          Author:{" "}
-          {isSender ? requestData.sender_name : requestData.receiver_name}{" "}
+          From: {isSender ? requestData.sender_name : requestData.receiver_name}{" "}
           {"\n"}
           From post: {requestData.post_title} {"\n"}
           Message: {"\n"}
@@ -45,7 +56,11 @@ function RequestDetailsScreen({ route }) {
 
         {isSender && (
           <View style={details.btnArea}>
-            <ModButton title="Decline" onPress={() => alert("TODO")} />
+            <ModButton
+              title="Decline"
+              onPress={handleDecline}
+              textStyle={{ color: "red" }}
+            />
             <ModButton
               textStyle={details.posBtnText}
               title="Approve"

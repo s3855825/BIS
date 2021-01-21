@@ -15,13 +15,12 @@ import AuthContext from "../auth/context";
 import InboxNavigator from "./InboxNavigator";
 import OutboxNavigator from "./OutboxNavigator";
 import routes from "./routes";
+import authStorage from "../auth/storage";
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   const { setUser } = useContext(AuthContext);
-
-  const handlePress = () => setUser(null);
 
   const showConfirmation = () => {
     Alert.alert(
@@ -32,10 +31,15 @@ function CustomDrawerContent(props) {
           text: "Cancel",
           style: "cancel",
         },
-        { text: "OK", onPress: handlePress },
+        { text: "OK", onPress: handleLogout },
       ],
       { onDismiss: () => {} }
     );
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    authStorage.removeUser();
   };
 
   return (

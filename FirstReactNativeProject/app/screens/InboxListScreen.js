@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import bgColor from "../config/bgColor";
@@ -15,13 +15,25 @@ import TouchableText from "../components/TouchableText";
 export default function InboxListScreen() {
   const { user } = useContext(AuthContext);
   const { data, loading, error, request } = useApi(requestsApi.getInbox);
+  const [haveMail, setHaveMail] = useState(false);
 
   useEffect(() => {
     loadInbox();
   }, []);
 
-  const loadInbox = () => {
-    request(user.id);
+  const loadInbox = async () => {
+    await request(user.id);
+
+    if (error) {
+      setHaveMail(true);
+      return;
+    }
+
+    if (!Array.isArray(data)) {
+      setHaveMail(false);
+    } else {
+      setHaveMail(true);
+    }
   };
 
   return (
@@ -31,12 +43,25 @@ export default function InboxListScreen() {
       {error && (
         <View style={barList.loadErrorArea}>
           <ErrorMessage error="Could not load requests" visible={error} />
-          <TouchableText onPress={loadInbox}>Retry</TouchableText>
+          <Text>Pull to retry</Text>
         </View>
       )}
 
-      <View style={barList.body}>
-        <RequestList listData={data} status={true} onRefresh={loadInbox} />
+      <View style={barList.loadErrorArea}>
+        <ErrorMessage
+          error="Your inbox is empty"
+          visible={!haveMail}
+          color="black"
+        />
+      </View>
+
+      <View style={barList.listArea}>
+        <RequestList
+          listData={data}
+          status={true}
+          onRefresh={loadInbox}
+          isInbox={true}
+        />
       </View>
     </View>
   );

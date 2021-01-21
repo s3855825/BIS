@@ -35,27 +35,27 @@ const validationSchema = Yup.object().shape({
 export default function GroupInfoScreen({ route, navigation }) {
   const groupInfo = route.params;
   const [memberModal, setMemberModal] = useState(false);
-  const [postModal, setPostModal] = useState(false);
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleSubmit = async ({ friendcode }) => {
-    const result = await groupsApi.addMember(groupInfo.id, friendcode);
-
-    if (result.ok) {
-      setMemberModal(false);
-    }
-
-    // console.log(result.data);
-    setError(!result.ok);
-    setSuccess(result.ok);
-  };
+  const [refreshing, setRefreshing] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const { data, loading, request } = useApi(groupsApi.getMembers);
 
   useEffect(() => {
     request(groupInfo.id);
-  }, []);
+  }, [reload]);
+
+  const handleSubmit = async ({ friendcode }) => {
+    const result = await groupsApi.addMember(groupInfo.id, friendcode);
+
+    if (!result.ok) {
+      setError(true);
+    }
+
+    setError(false);
+    setMemberModal(false);
+    setReload(!reload);
+  };
 
   return (
     <View style={styles.container}>
@@ -71,7 +71,7 @@ export default function GroupInfoScreen({ route, navigation }) {
           style={{ marginRight: 10 }}
         />
         <TouchableIcon
-          onPress={() => setPostModal(true)}
+          onPress={() => navigation.navigate(routes.CREATE_POSTS, groupInfo)}
           matComIcon="newspaper-plus"
           size={25}
           style={{ marginRight: 10 }}
@@ -85,22 +85,14 @@ export default function GroupInfoScreen({ route, navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate(routes.CREATE_REVIEWS, item)}
             >
-              <Text>{item.member_name}</Text>
+              <Text style={{ fontSize: 18 }}>{item.member_name}</Text>
             </TouchableOpacity>
           )}
           ItemSeparatorComponent={ListSeparator}
+          refreshing={refreshing}
+          onRefresh={() => request(groupInfo.id)}
         />
       </View>
-
-      <Modal
-        visible={postModal}
-        animationType="slide"
-        onRequestClose={() => {
-          setPostModal(false);
-        }}
-      >
-        <CreatePostScreen />
-      </Modal>
 
       <Modal
         visible={memberModal}
@@ -113,7 +105,6 @@ export default function GroupInfoScreen({ route, navigation }) {
         <Screen style={modal.container}>
           <View style={modal.modalView}>
             <ErrorMessage error="Failed to add member" visible={error} />
-            <ErrorMessage error="Member added" visible={success} />
             <ModForm
               initialValues={{ friendcode: "" }}
               onSubmit={handleSubmit}
@@ -123,6 +114,7 @@ export default function GroupInfoScreen({ route, navigation }) {
               <ModFormField
                 placeholder="Friendcode"
                 name="friendcode"
+                keyboardType="numeric"
                 style={modal.bar}
               />
               <SubmitButton style={modal.bar} title="Confirm" />
@@ -142,7 +134,8 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop: 15,
+    paddingHorizontal: 20,
   },
   text: {
     marginLeft: 20,

@@ -26,6 +26,7 @@ export default {
     alignSelf: "flex-end",
   },
   btnArea: {
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },

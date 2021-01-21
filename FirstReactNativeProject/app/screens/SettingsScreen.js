@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
 
 function SettingsScreen({ navigation }) {
   const handleSubmit = () => {
-    alert("TODO");
+    alert("Coming soon");
   };
 
   return (

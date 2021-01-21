@@ -86,12 +86,11 @@ export default function GroupDetailScreen({ route, navigation }) {
           />
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={styles.body}>
           {data.EmptyTaskList == "No task in group yet" && (
             <ModText>Your group doesn't have any task yet</ModText>
           )}
           <FlatList
-            style={{ paddingHorizontal: 20 }}
             data={data}
             keyExtractor={(item) => item.task_id.toString()}
             renderItem={({ item }) => (
@@ -100,7 +99,7 @@ export default function GroupDetailScreen({ route, navigation }) {
                   navigation.navigate(routes.TASK_DETAILS, { item, groupInfo })
                 }
               >
-                <Text>{item.task_name}</Text>
+                <Text style={{ fontSize: 18 }}>{item.task_name}</Text>
               </TouchableOpacity>
             )}
             ItemSeparatorComponent={ListSeparator}
@@ -154,6 +153,8 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
+    paddingTop: 15,
+    paddingHorizontal: 20,
   },
   text: {
     marginLeft: 20,

@@ -20,12 +20,11 @@ function DashboardNavigator() {
 
   const showConfirmation = () => {
     Alert.alert(
-      "Create posts",
-      "Please navigate to your group to create a post.",
+      "Tips",
+      "If you want to create your own post, go to the info section in your group, there, you will find a creat post button that you can use to recruit members.",
       [
         {
           text: "OK",
-          onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
       ],
@@ -58,6 +57,14 @@ function DashboardNavigator() {
               size={40}
             />
           ),
+          headerRight: () => (
+            <TouchableIcon
+              onPress={showConfirmation}
+              style={header.rightBtn}
+              antIcon="questioncircleo"
+              size={28}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -77,7 +84,11 @@ function DashboardNavigator() {
           ),
         })}
       />
-      <Stack.Screen name={routes.SEND_REQUESTS} component={SendRequestScreen} />
+      <Stack.Screen
+        name={routes.SEND_REQUESTS}
+        options={{ title: "Send Request" }}
+        component={SendRequestScreen}
+      />
     </Stack.Navigator>
   );
 }
