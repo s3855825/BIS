@@ -92,13 +92,14 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    backgroundColor: "green",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 2,
   },
   avatarText: {
     fontSize: 30,
-    color: "white",
+    color: "black",
   },
   text: {
     marginBottom: 5,

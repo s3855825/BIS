@@ -49,8 +49,6 @@ export default function DashboardScreen({ navigation }) {
       setHavePost(false);
     }
 
-    console.log(Array.isArray(allData), havePost, searching);
-
     setHaveSearch(true);
     setSearching(false);
   };

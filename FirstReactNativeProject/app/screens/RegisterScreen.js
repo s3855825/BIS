@@ -63,6 +63,7 @@ function RegisterScreen() {
           keyboardType="email-address"
           textContentType="emailAddress"
           name="email"
+          matIcon="email"
           style={styles.bar}
         />
         <ModFormField
@@ -70,6 +71,7 @@ function RegisterScreen() {
           autoCorrect={false}
           placeholder="username"
           name="username"
+          antIcon="user"
           style={styles.bar}
         />
         <ModFormField
@@ -78,6 +80,7 @@ function RegisterScreen() {
           placeholder="password"
           textContentType="password"
           name="password"
+          matIcon="lock"
           secureTextEntry
           style={styles.bar}
         />

@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert, Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import * as Yup from "yup";
 
-import AuthContext from "../auth/context";
+import TeaContext from "../auth/context";
 import reviewsApi from "../api/reviews";
 
 import ModForm from "../components/ModForm";
@@ -12,23 +12,24 @@ import SubmitButton from "../components/SubmitButton";
 import ErrorMessage from "../components/ErrorMessage";
 
 const validationSchema = Yup.object().shape({
-  score: Yup.number().label("Title"),
+  score: Yup.number().label("Score"),
   message: Yup.string().required().min(10).max(255).label("Message"),
 });
 
 function AddReviewsScreen() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(TeaContext);
   const route = useRoute();
   const members = route.params;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async ({ score, message }) => {
+    console.log(score, message, members.member_id, user.id);
     const result = await reviewsApi.addReviews(
       score,
       message,
-      user.id,
-      members.member_id
+      members.member_id,
+      user.id
     );
 
     console.log(result.data);
@@ -46,7 +47,12 @@ function AddReviewsScreen() {
         <ErrorMessage error="Failed to send review" visible={error} />
         <ErrorMessage error="Success!" visible={success} />
         <Text>Add some reviews for member: {members.member_name}</Text>
-        <ModFormField placeholder="score" name="Score" style={styles.bar} />
+        <ModFormField
+          placeholder="score"
+          name="score"
+          style={styles.bar}
+          keyboardType="numeric"
+        />
         <ModFormField
           placeholder="Message"
           name="message"

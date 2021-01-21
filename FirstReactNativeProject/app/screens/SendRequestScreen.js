@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import * as Yup from "yup";
 
@@ -7,6 +7,7 @@ import AuthContext from "../auth/context";
 import ModFormField from "../components/ModFormField";
 import ModForm from "../components/ModForm";
 import SubmitButton from "../components/SubmitButton";
+import ErrorMessage from "../components/ErrorMessage";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).max(500).label("Title"),
@@ -16,24 +17,27 @@ const validationSchema = Yup.object().shape({
 function SendRequestScreen({ route }) {
   const { user } = useContext(AuthContext);
   const postInfo = route.params;
+  const [success, setSuccess] = useState();
+  const [error, setError] = useState(false);
 
   const handleSubmit = async ({ title, message }) => {
     const result = await requestsApi.sendRequest(
       title,
       message,
       user.id,
-      postInfo.author_id,
+      postInfo.author,
       postInfo.id
     );
 
-    console.log(title, message, user.id, postInfo.author_id, postInfo.id);
     if (!result.ok) {
-      console.log(result.data + result.problem + result.errors);
-      Alert.alert("Error!", "Could not send request.");
+      console.log(result.data);
+      setError(true);
+      setSuccess(false);
       return;
     }
 
-    Alert.alert("Success!", "Request sent.");
+    setError(false);
+    setSuccess(true);
   };
 
   return (
@@ -43,6 +47,8 @@ function SendRequestScreen({ route }) {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
+        <ErrorMessage error="Could not send request" visible={error} />
+        <ErrorMessage error="Success!" visible={success} />
         <ModFormField
           placeholder="title"
           name="title"

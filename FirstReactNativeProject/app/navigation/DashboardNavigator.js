@@ -58,14 +58,6 @@ function DashboardNavigator() {
               size={40}
             />
           ),
-          headerRight: () => (
-            <TouchableIcon
-              onPress={showConfirmation}
-              style={header.rightBtn}
-              size={40}
-              matIcon="add"
-            />
-          ),
         }}
       />
       <Stack.Screen
@@ -75,7 +67,9 @@ function DashboardNavigator() {
           title: route.params.title,
           headerRight: () => (
             <TouchableIcon
-              onPress={() => navigation.navigate(routes.SEND_REQUESTS)}
+              onPress={() =>
+                navigation.navigate(routes.SEND_REQUESTS, route.params)
+              }
               style={header.rightBtn}
               size={30}
               matComIcon="email-edit"

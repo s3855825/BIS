@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, Text, Image } from "react-native";
 import * as Yup from "yup";
 
 import ModButton from "../components/ModButton";
@@ -38,6 +38,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <Screen style={styles.container}>
+      <Image source={require("../assets/logos/logo.png")} />
       <ModForm
         initialValues={{ username: "", password: "" }}
         onSubmit={handleSubmit}
