@@ -33,15 +33,15 @@ function ProfileScreen() {
     loadAll();
   }, []);
 
-  const loadAll = async () => {
-    await loadForPosts(user.id);
+  const loadAll = () => {
+    loadForPosts(user.id);
     loadForUser(user.id);
 
-    if (Array.isArray(allPosts) == false && postError == false) {
-      setHavePost(false);
-    } else {
-      setHavePost(true);
-    }
+    // if (Array.isArray(allPosts) == false && postError == false) {
+    //   setHavePost(false);
+    // } else {
+    //   setHavePost(true);
+    // }
   };
 
   // const loadUser = () => {
@@ -71,7 +71,7 @@ function ProfileScreen() {
       <View style={styles.loadErrorArea}>
         <ErrorMessage
           error="You don't have any post yet"
-          visible={!havePost}
+          visible={!Array.isArray(allPosts)}
           color="black"
           isItalic={true}
         />

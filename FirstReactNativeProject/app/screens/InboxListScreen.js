@@ -15,25 +15,13 @@ import TouchableText from "../components/TouchableText";
 export default function InboxListScreen() {
   const { user } = useContext(AuthContext);
   const { data, loading, error, request } = useApi(requestsApi.getInbox);
-  const [haveMail, setHaveMail] = useState(false);
 
   useEffect(() => {
     loadInbox();
   }, []);
 
-  const loadInbox = async () => {
-    await request(user.id);
-
-    if (error) {
-      setHaveMail(true);
-      return;
-    }
-
-    if (!Array.isArray(data)) {
-      setHaveMail(false);
-    } else {
-      setHaveMail(true);
-    }
+  const loadInbox = () => {
+    request(user.id);
   };
 
   return (
@@ -50,7 +38,7 @@ export default function InboxListScreen() {
       <View style={barList.loadErrorArea}>
         <ErrorMessage
           error="Your inbox is empty"
-          visible={!haveMail}
+          visible={!Array.isArray(data)}
           color="black"
         />
       </View>

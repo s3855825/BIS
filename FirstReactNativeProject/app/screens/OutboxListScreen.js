@@ -23,16 +23,16 @@ export default function OutboxListScreen() {
   const loadOutbox = () => {
     request(user.id);
 
-    if (error) {
-      setHaveMail(true);
-      return;
-    }
+    // if (error) {
+    //   setHaveMail(true);
+    //   return;
+    // }
 
-    if (!Array.isArray(data)) {
-      setHaveMail(false);
-    } else {
-      setHaveMail(true);
-    }
+    // if (!Array.isArray(data)) {
+    //   setHaveMail(false);
+    // } else {
+    //   setHaveMail(true);
+    // }
   };
 
   return (
@@ -49,7 +49,7 @@ export default function OutboxListScreen() {
       <View style={barList.loadErrorArea}>
         <ErrorMessage
           error="Your sent folder is empty"
-          visible={!haveMail}
+          visible={!Array.isArray(data)}
           color="black"
         />
       </View>
