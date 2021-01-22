@@ -24,7 +24,6 @@ function AddReviewsScreen() {
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async ({ score, message }) => {
-    console.log(score, message, members.member_id, user.id);
     const result = await reviewsApi.addReviews(
       score,
       message,
@@ -32,7 +31,6 @@ function AddReviewsScreen() {
       user.id
     );
 
-    console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
   };

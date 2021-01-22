@@ -22,15 +22,9 @@ function AddMembersScreen({ onMemberSuccess }) {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const passedIn = () => {
-    console.log("helo");
-  };
-
   const handleSubmit = async ({ friendcode }) => {
     const result = await groupsApi.addMember(id, friendcode);
 
-    if (result.ok) passedIn();
-    // console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
   };

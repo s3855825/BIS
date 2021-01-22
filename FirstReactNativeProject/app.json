@@ -1,11 +1,13 @@
 {
-  "name": "FirstReactNativeProject",
-  "displayName": "FirstReactNativeProject",
+  "name": "GroupFinding",
+  "displayName": "GroupFinding",
   "expo": {
-    "name": "FirstReactNativeProject",
-    "slug": "FirstReactNativeProject",
+    "name": "GroupFinding",
+    "slug": "GroupFinding",
+    "privacy": "unlisted",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "description": "An app that helps you find teammates for your group project."
   },
   "android": {
     "package": "com.teamfour.groupfinder",

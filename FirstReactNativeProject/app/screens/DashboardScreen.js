@@ -56,7 +56,7 @@ export default function DashboardScreen({ navigation }) {
   const handleSubmit = ({ searchText }) => {
     searchForData(searchText);
 
-    if (Array.isArray(allData)) {
+    if (searchData.length != 0) {
       setHaveSearch(true);
     } else {
       setHaveSearch(false);
@@ -96,16 +96,9 @@ export default function DashboardScreen({ navigation }) {
             visible={!searching ? errorAll : errorSearch}
           />
           <ErrorMessage
-            error={
-              !searching
-                ? "There isn't any post yet"
-                : "There is no result that matches your search"
-            }
+            error={!searching ? "There isn't any post yet" : "No result"}
             visible={!searching ? !havePost : !haveSearch}
           />
-          <TouchableText onPress={!searching ? loadData : handleSubmit}>
-            Retry
-          </TouchableText>
         </View>
       )}
 

@@ -102,7 +102,15 @@ export default function App({ navigation }) {
       {error && (
         <View style={barList.loadErrorArea}>
           <ErrorMessage error="Could not load groups" visible={error} />
-          <TouchableText onPress={loadData}>Retry</TouchableText>
+        </View>
+      )}
+
+      {!Array.isArray(data) && (
+        <View style={barList.loadErrorArea}>
+          <ErrorMessage
+            error="You don't have any group yet"
+            visible={!Array.isArray(data)}
+          />
         </View>
       )}
 

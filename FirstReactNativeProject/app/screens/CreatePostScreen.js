@@ -31,7 +31,6 @@ function CreatePostScreen({ route }) {
       user.id
     );
 
-    console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
   };

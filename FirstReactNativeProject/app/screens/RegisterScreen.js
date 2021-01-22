@@ -28,7 +28,6 @@ function RegisterScreen() {
       );
       return;
     }
-    console.log(registerResponse.data);
 
     // request to login to extract user info
     const loginResponse = await authApi.login(username, password);
@@ -39,7 +38,6 @@ function RegisterScreen() {
       );
       return;
     }
-    console.log(loginResponse.data);
 
     const { friendcode } = loginResponse.data;
 

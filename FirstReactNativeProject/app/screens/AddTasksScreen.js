@@ -42,8 +42,6 @@ function AddTasksScreen() {
       setError(true);
     }
 
-    console.log(task_name, task_description, groupInfo.id, user.id);
-    console.log(result.data);
     setError(!result.ok);
     setSuccess(result.ok);
     // setTaskModal(false);

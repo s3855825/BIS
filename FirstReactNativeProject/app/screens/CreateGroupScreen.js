@@ -44,7 +44,6 @@ function CreateGroupScreen() {
       return setAddMemberError(true);
     }
 
-    console.log(groupRes.data);
     navigation.navigate(routes.GROUP_DETAILS, groupRes.data);
   };
 
